@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Klausur-Trainer · Digitaltechnik">
+  <title>Klausur-Trainer · Digitaltechnik</title>
+
+  <!-- Hintergrund: stark gerundetes Quadrat (rx/ry = 22% der Kantenlaenge),
+       Teal-Verlauf #2dd4bf -> #14b8a6, identischer Look wie das Header-Logo.
+       Prozentangaben -> skaliert vollstaendig mit der viewBox, keine festen Pixel. -->
+  <defs>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="100%" height="100%" rx="22%" ry="22%" fill="url(#teal)"/>
+
+  <!-- Symbol: Binaeres "01" als geometrische Pfade (passend zum Header-Logo "01").
+       Bewusst als <path>/<ellipse> statt <text>, damit es OHNE Font-Abhaengigkeit
+       ueberall identisch und scharf rendert (z. B. bei der Rasterung mit sharp/librsvg,
+       wo System-Fonts oft fehlen). Dunkles Teal-Schwarz #04231f auf hellem Teal
+       -> hoher Kontrast, exakt wie im Header. Koordinaten im viewBox-Raum (0..512). -->
+  <g fill="none" stroke="#04231f" stroke-width="50" stroke-linecap="round" stroke-linejoin="round">
+    <!-- "0" -->
+    <ellipse cx="176" cy="256" rx="64" ry="108"/>
+    <!-- "1": Fahne + Stamm + Fuss -->
+    <path d="M 300 200 L 342 150 L 342 362"/>
+    <path d="M 298 362 L 388 362"/>
+  </g>
+</svg>

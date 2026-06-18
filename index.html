@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Klausur-Trainer · Digitaltechnik</title>
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/public/icons/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/public/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/public/icons/favicon-16x16.png">
+
+<!-- iOS / iPadOS Homescreen -->
+<link rel="apple-touch-icon" sizes="180x180" href="/public/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Digitaltechnik">
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2dd4bf">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0e15; --bg2:#11141d; --surface:#161a25; --surface2:#1c2130;
+  --ink:#e9edf5; --muted:#9aa4b8; --faint:#6b7488;
+  --vi:#2dd4bf; --vi-d:#14b8a6; --vi-bg:rgba(45,212,191,.13); --vi-bg2:rgba(45,212,191,.22);
+  --gr:#818cf8; --gr-d:#6366f1; --gr-bg:rgba(129,140,248,.15); --gr-bg2:rgba(129,140,248,.26);
+  --green:#34d399; --green-bg:rgba(52,211,153,.14); --green-bg2:rgba(52,211,153,.24);
+  --red:#ef4444; --red-bg:rgba(239,68,68,.14); --red-bg2:rgba(239,68,68,.24);
+  --amber:#f5b942;
+  --border:#252b3b; --border2:#313a4f;
+  --r-sm:8px; --r-md:12px; --r-lg:18px; --r-xl:22px; --r-pill:999px;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+*:focus-visible{outline:2px solid var(--vi);outline-offset:2px;border-radius:4px}
+html{-webkit-text-size-adjust:100%}
+html,body{height:100%}
+body{
+  font-family:'Inter',-apple-system,system-ui,sans-serif;
+  background:radial-gradient(1200px 700px at 82% -10%,rgba(139,92,246,.10),transparent 60%),
+             radial-gradient(900px 600px at -10% 110%,rgba(34,197,94,.08),transparent 55%),var(--bg);
+  background-attachment:fixed;
+  color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5;
+  min-height:100vh;min-height:100dvh;overflow-x:hidden;
+  padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+}
+.wrap{max-width:760px;margin:0 auto}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+sup,sub{font-size:.72em}
+.prompt,.opt,.fb,.why,.qtag,p,h1,h3{overflow-wrap:break-word;word-break:normal}
+
+/* Header */
+header{display:flex;align-items:center;gap:13px;margin-bottom:16px;flex-wrap:wrap}
+.logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:20px;
+  background:linear-gradient(135deg,var(--vi),var(--vi-d));color:#04231f;box-shadow:0 6px 18px rgba(45,212,191,.34);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.title{min-width:0}
+.title h1{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.title p{font-size:12px;color:var(--muted)}
+.spacer{flex:1;min-width:8px}
+
+/* Stat chips */
+.stats{display:flex;gap:7px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-pill);padding:6px 11px;font-size:12.5px;font-weight:600}
+.chip .k{color:var(--muted);font-weight:500}
+.chip b{font-variant-numeric:tabular-nums}
+.lvlbar{height:5px;background:var(--border);border-radius:var(--r-pill);overflow:hidden;margin-top:8px}
+.lvlbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--gr),var(--gr-d));border-radius:var(--r-pill);transition:width .5s}
+
+/* Panels */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:18px;box-shadow:var(--shadow)}
+.section-h{font-size:12.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);font-weight:700;margin:22px 4px 10px}
+
+/* Mode grid */
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+@media(max-width:560px){.modes{grid-template-columns:1fr}}
+.mode{position:relative;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:15px 15px 15px 18px;transition:transform .14s,border-color .14s,background .14s;overflow:hidden}
+.mode:hover{transform:translateY(-2px);border-color:var(--border2);background:var(--surface2)}
+.mode:active{transform:translateY(0)}
+.mode .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:20px;margin-bottom:9px}
+.mode.vi .ic{background:var(--vi-bg);color:var(--vi)}
+.mode.gr .ic{background:var(--gr-bg);color:var(--gr)}
+.mode h3{font-size:14.5px;font-weight:700;margin-bottom:3px}
+.mode p{font-size:12px;color:var(--muted);line-height:1.45}
+.mode .acc{font-size:11px;color:var(--faint);margin-top:8px;font-weight:600}
+.mode .edge{position:absolute;left:0;top:0;bottom:0;width:3px}
+.mode.vi .edge{background:var(--vi)}.mode.gr .edge{background:var(--gr)}
+
+/* Setup */
+.setup{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.seg{display:inline-flex;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-pill);padding:3px}
+.seg button{padding:7px 14px;border-radius:var(--r-pill);font-size:13px;font-weight:600;color:var(--muted);transition:.14s}
+.seg button.on{background:var(--vi);color:#160b2e}
+.label{font-size:12.5px;color:var(--muted);font-weight:600}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:var(--r-md);
+  font-weight:700;font-size:14.5px;transition:transform .12s,filter .12s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:linear-gradient(135deg,var(--vi),var(--vi-d));color:#04231f;box-shadow:0 6px 16px rgba(45,212,191,.28)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.green{background:linear-gradient(135deg,var(--green),#10b981);color:#04231a;box-shadow:0 6px 16px rgba(52,211,153,.25)}
+.btn.ghost{background:var(--surface2);border:1px solid var(--border);color:var(--ink)}
+.btn.sm{padding:9px 14px;font-size:13px}
+.btn.full{width:100%}
+
+/* Training bar */
+.tbar{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.prog{flex:1;height:8px;background:var(--border);border-radius:var(--r-pill);overflow:hidden}
+.prog>i{display:block;height:100%;background:linear-gradient(90deg,var(--gr),var(--vi));border-radius:var(--r-pill);transition:width .35s}
+.qcount{font-size:12.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.combo{font-size:13px;font-weight:700;color:var(--vi);min-width:42px;text-align:right}
+
+/* Question card */
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:20px;box-shadow:var(--shadow)}
+.qtag{display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;
+  color:var(--vi);background:var(--vi-bg);padding:4px 10px;border-radius:var(--r-pill);margin-bottom:13px}
+.qtag.gr{color:var(--gr);background:var(--gr-bg)}
+/* Merken / Bookmark-Toggle */
+.qhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:13px}
+.qhead .qtag{margin-bottom:0}
+.markbtn{flex-shrink:0;width:40px;height:40px;margin:-6px -4px 0 0;border-radius:11px;display:grid;place-items:center;
+  background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+  transition:transform .12s,border-color .14s,background .14s,color .14s}
+.markbtn:hover{border-color:var(--vi);background:var(--bg2);color:var(--vi)}
+.markbtn:active{transform:scale(.9)}
+.markbtn.on{background:var(--vi-bg);border-color:var(--vi);color:var(--vi)}
+.markbtn.on .bm path{fill:var(--vi)}
+.markbtn .bm{pointer-events:none}
+.markbtn.pulse{animation:markpop .34s}
+@keyframes markpop{0%{transform:scale(1)}38%{transform:scale(1.24)}100%{transform:scale(1)}}
+.prompt{font-size:16.5px;font-weight:600;line-height:1.5;margin-bottom:4px}
+.prompt .big{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600}
+pre.code{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-md);padding:14px 15px;
+  font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;overflow-x:auto;-webkit-overflow-scrolling:touch;color:#cdd6ea;margin:12px 0;white-space:pre}
+pre.code .kw{color:var(--vi);font-weight:600}
+pre.code .cm{color:var(--faint);font-style:italic}
+.recur{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;text-align:center;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 12px;margin:13px 0;color:var(--ink);overflow-x:auto;white-space:nowrap}
+.steplbl{font-size:12px;font-weight:700;color:var(--gr);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 2px}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.opt{display:flex;align-items:center;gap:11px;text-align:left;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--r-md);padding:13px 14px;font-size:15px;font-weight:600;transition:.12s}
+.opt:hover:not(.locked){border-color:var(--vi);background:var(--bg2)}
+.opt .key{width:25px;height:25px;border-radius:7px;display:grid;place-items:center;background:var(--bg);border:1px solid var(--border2);
+  font-size:12.5px;font-weight:700;color:var(--muted);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.opt .mono{font-size:15px}
+.opt.locked{cursor:default}
+.opt.correct{border-color:var(--green);background:var(--green-bg)}
+.opt.correct .key{background:var(--green);color:#04231a;border-color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-bg)}
+.opt.wrong .key{background:var(--red);color:#2a0808;border-color:var(--red)}
+.opt.dim{opacity:.5}
+
+/* Self-check */
+.calcrow{margin:15px 0 4px}
+.calcin{width:100%;background:var(--bg2);border:1.6px solid var(--border);border-radius:var(--r-md);padding:14px 15px;
+  color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:1px;transition:.14s}
+.calcin::placeholder{color:var(--faint);letter-spacing:0;font-size:14px}
+.calcin:focus{outline:none;border-color:var(--vi);background:var(--bg);box-shadow:0 0 0 3px var(--vi-bg)}
+.calcin:disabled{opacity:.75}
+.selftask{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:6px}
+.selfhint{font-size:12.5px;color:var(--faint);margin-bottom:12px}
+textarea.selfin{width:100%;min-height:96px;resize:vertical;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:12px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1.5}
+textarea.selfin::placeholder{color:var(--faint)}
+.sol{margin-top:14px;border:1px solid var(--gr);background:var(--gr-bg);border-radius:var(--r-md);padding:14px 15px;font-size:14px;line-height:1.6}
+.sol h4{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--gr);margin-bottom:8px}
+.sol p{margin:0 0 8px}
+.sol ul{margin:0 0 8px 18px}
+.sol li{margin-bottom:4px}
+.rate{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px}
+@media(max-width:430px){.rate{grid-template-columns:1fr}}
+.rbtn{padding:12px 8px;border-radius:var(--r-md);font-weight:700;font-size:13.5px;border:1.5px solid var(--border);background:var(--surface2)}
+.rbtn.good{border-color:var(--green);color:var(--green)}
+.rbtn.mid{border-color:var(--amber);color:var(--amber)}
+.rbtn.bad{border-color:var(--red);color:var(--red)}
+.rbtn:active{transform:translateY(1px)}
+
+/* Feedback */
+.fb{margin-top:15px;border-radius:var(--r-md);padding:14px 15px;font-size:14px;line-height:1.55;border:1px solid}
+.fb.ok{background:var(--green-bg);border-color:rgba(52,211,153,.4)}
+.fb.no{background:var(--red-bg);border-color:rgba(239,68,68,.4)}
+.fb.mid{background:rgba(245,185,66,.12);border-color:rgba(245,185,66,.4)}
+.fb .head{font-weight:800;font-size:14px;margin-bottom:5px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.fb.ok .head{color:var(--green)}.fb.no .head{color:var(--red)}.fb.mid .head{color:var(--amber)}
+.fb .why{color:var(--ink)}
+.fb .why .hl{color:var(--vi);font-weight:600}
+.fb code{font-family:'JetBrains Mono',monospace;background:var(--bg);padding:1px 6px;border-radius:5px;font-size:13px}
+.nextrow{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+.nextrow .btn{flex:1;min-width:130px}
+
+/* Results */
+.result-big{text-align:center;padding:8px 0 18px}
+.result-big .pct{font-size:54px;font-weight:800;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.result-big .pct.good{color:var(--green)}.result-big .pct.midc{color:var(--amber)}.result-big .pct.low{color:var(--red)}
+.result-big .sub{color:var(--muted);font-size:14px;margin-top:2px}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 16px}
+.rstat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 8px;text-align:center}
+.rstat b{display:block;font-size:23px;font-weight:800;font-variant-numeric:tabular-nums}
+.rstat span{font-size:11.5px;color:var(--muted)}
+.newbadges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+
+/* Badges */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+.badge{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 7px;opacity:.4;transition:.2s}
+.badge.un{opacity:1;border-color:var(--vi);background:var(--vi-bg)}
+.badge .e{font-size:25px}
+.badge .n{font-size:10.5px;font-weight:700;margin-top:5px}
+.badge .d{font-size:9.5px;color:var(--muted);margin-top:2px;line-height:1.3}
+.pop{animation:pop .4s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+/* Wide mode card (Alle Themen / Wiederholen) */
+.mode.wide{grid-column:1/-1}
+
+/* Profile button */
+.profilebtn{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-pill);padding:5px 12px 5px 6px;font-size:12.5px;font-weight:700;color:var(--ink);max-width:170px}
+.profilebtn:hover{border-color:var(--border2);background:var(--surface2)}
+.profilebtn .pfic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;
+  background:linear-gradient(135deg,var(--vi),var(--vi-d));color:#04231f;flex-shrink:0}
+.profilebtn span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Profile overlay + modal */
+.overlay{position:fixed;inset:0;background:rgba(6,8,14,.66);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  display:none;align-items:flex-end;justify-content:center;z-index:50}
+.overlay.show{display:flex}
+@media(min-width:560px){.overlay{align-items:center;padding:20px}}
+.modal{width:100%;max-width:480px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--shadow);padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;
+  animation:slideup .26s cubic-bezier(.32,.72,0,1)}
+@media(min-width:560px){.modal{border-radius:var(--r-xl);animation:none}}
+@keyframes slideup{from{transform:translateY(40px);opacity:.4}to{transform:translateY(0);opacity:1}}
+.modal-h{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.modal-h .mi{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:20px;
+  background:var(--vi-bg);color:var(--vi);flex-shrink:0}
+.modal-h h3{font-size:16.5px;font-weight:800}
+.modal-h p{font-size:12px;color:var(--muted)}
+.pf-form{display:flex;gap:9px}
+.pf-form input{flex:1;min-width:0;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-md);
+  padding:12px 13px;font-size:16px;font-weight:600;color:var(--ink);font-family:inherit}
+.pf-form input::placeholder{color:var(--faint)}
+.pf-form input:focus{outline:none;border-color:var(--vi)}
+.pf-form .btn{flex:0 0 auto;padding:12px 16px}
+.pf-hint{font-size:12px;color:var(--muted);margin:11px 2px 2px;line-height:1.45}
+.pf-sec{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);font-weight:700;margin:18px 2px 10px}
+.pf-list{display:flex;flex-direction:column;gap:8px}
+.pf-row{display:flex;align-items:center;gap:11px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:10px 12px}
+.pf-row.active{border-color:var(--vi);background:var(--vi-bg)}
+.pf-av{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:grid;place-items:center;font-weight:800;font-size:14px;
+  background:linear-gradient(135deg,var(--vi),var(--vi-d));color:#04231f}
+.pf-meta{flex:1;min-width:0}
+.pf-meta .nm{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:7px}
+.pf-meta .lv{font-size:11.5px;color:var(--faint);margin-top:2px}
+.pf-tag{font-size:9px;font-weight:800;color:#160b2e;background:var(--vi);border-radius:99px;padding:2px 7px;letter-spacing:.03em;flex-shrink:0}
+.pf-use{flex:0 0 auto;font-size:12.5px;font-weight:700;color:var(--vi);background:var(--vi-bg);border:none;border-radius:var(--r-pill);padding:8px 13px}
+.pf-use:active{transform:translateY(1px)}
+.pf-check{flex:0 0 auto;width:28px;text-align:center;color:var(--gr);font-weight:800;font-size:16px}
+.pf-del{flex:0 0 auto;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:var(--faint);background:var(--bg2);font-size:14px}
+.pf-del:hover{color:var(--red)}
+.modal-close{width:100%;margin-top:16px;padding:12px;border-radius:var(--r-md);background:var(--surface2);
+  border:1px solid var(--border);color:var(--ink);font-weight:700;font-size:14px}
+.modal-close:hover{border-color:var(--border2)}
+
+.hidden{display:none!important}
+.footer{text-align:center;color:var(--faint);font-size:11.5px;margin-top:24px;line-height:1.7}
+.footer a{color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">01</div>
+    <div class="title"><h1>Klausur-Trainer</h1><p>Digitaltechnik · Zahlensysteme · IEEE 754 · Schaltalgebra · Addierer</p></div>
+    <div class="spacer"></div>
+    <div class="stats" id="hdrStats"></div>
+    <button type="button" class="profilebtn" id="profileBtn" aria-label="Profil wechseln">
+      <span class="pfic" id="pfAvatar">★</span><span id="pfBtnName">Gast</span>
+    </button>
+  </header>
+
+  <!-- HOME -->
+  <div id="home">
+    <div class="panel" style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div style="flex:1;min-width:170px">
+          <div style="font-size:13px;color:var(--muted);font-weight:600">Level <b id="lvlNum" style="color:var(--gr)">1</b></div>
+          <div class="lvlbar"><i id="lvlFill" style="width:0%"></i></div>
+        </div>
+        <div style="font-size:12px;color:var(--faint)" id="lvlText"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:15px;margin-bottom:6px">
+        <span style="font-size:13px;color:var(--muted);font-weight:600">Gemeisterte Fragen</span>
+        <b id="masteredText" style="font-size:12.5px;color:var(--vi);font-variant-numeric:tabular-nums">0 / 0</b>
+      </div>
+      <div class="lvlbar"><i id="masteredFill" style="width:0%;background:linear-gradient(90deg,var(--vi),var(--vi-d))"></i></div>
+    </div>
+
+    <div class="section-h">Übungsmodi · 7 Klausurthemen</div>
+    <div class="modes" id="modeGrid"></div>
+
+    <div class="section-h">Auszeichnungen</div>
+    <div class="badges" id="badgeGrid"></div>
+
+    <div class="footer">
+      Offline-Lerntool · Fortschritt lokal im Browser gespeichert<br>
+      Prof. Dr. Veronika Lesch · DHBW Mosbach ·
+      <a id="resetBtn">Fortschritt zurücksetzen</a>
+    </div>
+  </div>
+
+  <!-- TRAINING -->
+  <div id="train" class="hidden">
+    <div class="tbar">
+      <button class="btn ghost sm" id="quitBtn">✕ Beenden</button>
+      <div class="prog"><i id="progFill" style="width:0%"></i></div>
+      <span class="qcount" id="qCount"></span>
+      <span class="combo" id="comboBadge"></span>
+    </div>
+    <div id="qHost"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results" class="hidden">
+    <div class="panel">
+      <div class="result-big">
+        <div class="pct" id="rPct">0%</div>
+        <div class="sub" id="rSub"></div>
+      </div>
+      <div class="newbadges" id="rBadges"></div>
+      <div class="rgrid">
+        <div class="rstat"><b id="rCorrect">0</b><span>richtig</span></div>
+        <div class="rstat"><b id="rTotal">0</b><span>Aufgaben</span></div>
+        <div class="rstat"><b id="rBest">0</b><span>beste Combo</span></div>
+      </div>
+      <div class="nextrow">
+        <button class="btn primary full" id="againBtn">Nochmal</button>
+        <button class="btn ghost full" id="homeBtn">Startseite</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="overlay" id="pfOverlay">
+  <div class="modal" id="pfModal">
+    <div class="modal-h">
+      <div class="mi">👤</div>
+      <div><h3>Spielerprofil</h3><p>Dein Fortschritt wird lokal pro Name gespeichert</p></div>
+    </div>
+    <div class="pf-form">
+      <input id="pfName" type="text" maxlength="20" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Dein Name…">
+      <button type="button" class="btn primary" id="pfSave">Speichern</button>
+    </div>
+    <div class="pf-hint" id="pfHint"></div>
+    <div class="pf-sec">Profile</div>
+    <div class="pf-list" id="pfList"></div>
+    <button type="button" class="modal-close" id="pfClose">Schließen</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+function $(id){return document.getElementById(id);}
+
+/* ============ Syntax-Highlight für Pseudocode ============ */
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function hl(code){
+  var s=esc(code);
+  s=s.replace(/(\/\/[^\n]*)/g,'<span class="cm">$1<\/span>');
+  s=s.replace(/\b(for|while|to|downto|do|if|then|else|return|repeat|until|and|or|not|new|error|nil)\b/g,'<span class="kw">$1<\/span>');
+  return s;
+}
+
+/* ============================================================
+   FRAGEN-BÄNKE  (alle Werte gegen die VL-Folien verifiziert)
+   ============================================================ */
+
+/* ---- 1) DATENSTRUKTUR-OPERATIONEN ---- */
+/* ============ FRAGEN-BÄNKE · Digitaltechnik (Klausurstoff Prof. Scherzer) ============
+   Jedes Item trägt sein eigenes Format über das Feld t:
+     t:'mc'    Multiple-Choice  {q, o:[...], a:Index, w:Erklärung}
+     t:'calc'  Rechnen + prüfen {q, ans:[akzeptierte Antworten], w, ph?, hint?}
+     t:'steps' Schritt-für-Schritt {title, sub?, steps:[{q,o,a,w}]}
+     t:'self'  Selbst-Check     {tag, task, desc, code?}
+*/
+
+/* ---------- 1) Zahlensystem-Wandlung (Folien 48–62) ---------- */
+const WANDLUNG=[
+ {t:'mc',q:'Wie wandelt man eine <b>Dezimalzahl in eine Binärzahl</b> um?',o:['Fortgesetzte Division durch 2 — Reste in umgekehrter Reihenfolge','Multiplikation mit 2 von links','Division durch 16','Stellenwerte direkt addieren'],a:0,w:'Die Dezimalzahl wird fortlaufend durch 2 dividiert, bis 0 erreicht ist. Die <b>Divisionsreste</b> ergeben — von unten nach oben (<span class="hl">umgekehrte Reihenfolge</span>) gelesen — die Binärzahl.'},
+ {t:'calc',q:'Wandle die Dezimalzahl <b>43</b> in eine <b>Binärzahl</b> um.',ans:['101011'],ph:'z. B. 101011',w:'43 = 32 + 8 + 2 + 1 = <span class="hl">101011₂</span> (Stellenwerte 2⁵ 2³ 2¹ 2⁰).'},
+ {t:'calc',q:'Wandle den Dezimalbruch <b>0,6875</b> in einen <b>Binärbruch</b> um.',ans:['0,1011'],ph:'z. B. 0,1011',hint:'Nachkommateil fortlaufend × 2; die ganzzahligen Anteile von oben nach unten ablesen.',w:'0,6875·2=1,375→<b>1</b>; 0,375·2=0,75→<b>0</b>; 0,75·2=1,5→<b>1</b>; 0,5·2=1,0→<b>1</b> → <span class="hl">0,1011₂</span>.'},
+ {t:'calc',q:'Wandle die Binärzahl <b>101011</b> in eine <b>Dezimalzahl</b> um.',ans:['43'],ph:'z. B. 43',w:'32 + 0 + 8 + 0 + 2 + 1 = <span class="hl">43₁₀</span> — jede 1 mit ihrem Stellenwert (2⁵…2⁰) multiplizieren und addieren.'},
+ {t:'calc',q:'Wandle den Binärbruch <b>0,1011</b> in eine <b>Dezimalzahl</b> um.',ans:['0,6875'],ph:'z. B. 0,6875',w:'0,5 + 0 + 0,125 + 0,0625 = <span class="hl">0,6875</span> (Stellen 2⁻¹, 2⁻², 2⁻³, 2⁻⁴).'},
+ {t:'mc',q:'Wie wandelt man eine <b>Dezimalzahl in eine Hexadezimalzahl</b> um?',o:['Fortgesetzte Division durch 16 — Reste rückwärts','Division durch 2','4er-Gruppen bilden','Mit 16 multiplizieren'],a:0,w:'Fortlaufend durch 16 teilen, bis 0 erreicht ist; die Reste rückwärts ergeben die Hexadezimalzahl (Reste 10–15 → A–F).'},
+ {t:'calc',q:'Wandle die Hexadezimalzahl <b>E7A</b> in eine <b>Dezimalzahl</b> um.',ans:['3706'],ph:'z. B. 3706',hint:'E=14, Stellenwerte 16², 16¹, 16⁰.',w:'14·256 + 7·16 + 10·1 = 3584 + 112 + 10 = <span class="hl">3706₁₀</span>.'},
+ {t:'calc',q:'Wandle die Binärzahl <b>11010110</b> in eine <b>Hexadezimalzahl</b> um.',ans:['D6'],ph:'z. B. D6',hint:'Von rechts in 4er-Bündel gruppieren.',w:'1101 0110 → D 6 → <span class="hl">D6₁₆</span>. (1101=13=D, 0110=6).'},
+ {t:'calc',q:'Wandle die Hexadezimalzahl <b>37AF</b> in eine <b>Binärzahl</b> um.',ans:['11011110101111','0011011110101111'],ph:'z. B. 11011110101111',hint:'Jede Hexziffer in ein 4er-Bündel auflösen, führende Nullen dürfen weg.',w:'3=0011, 7=0111, A=1010, F=1111 → 0011 0111 1010 1111. Führende Nullen weglassen → <span class="hl">11 0111 1010 1111₂</span>.'},
+ {t:'mc',q:'Was ist eine <b>Tetrade</b> im BCD-Code?',o:['Eine 4-Bit-Gruppe für eine Dezimalziffer','Eine 8-Bit-Gruppe','Eine Hexadezimalziffer','Ein Übertragsbit'],a:0,w:'Jede Dezimalziffer wird durch eine eigene 4-Bit-Dualzahl ausgedrückt — diese 4 Bit nennt man <span class="hl">Tetrade</span> (griech. Vierergruppe).'},
+ {t:'mc',q:'Wie viele <b>Pseudotetraden</b> gibt es im BCD-Code?',o:['6','4','10','16'],a:0,w:'4 Bit erlauben 16 Kombinationen, aber nur 10 Dezimalziffern werden benötigt. Die übrigen <span class="hl">16 − 10 = 6</span> Tetraden sind Pseudotetraden und dürfen nicht auftreten.'},
+ {t:'calc',q:'Wandle die Dezimalzahl <b>27</b> in <b>BCD</b> um.',ans:['00100111'],ph:'z. B. 00100111',hint:'Jede Dezimalziffer einzeln als 4-Bit-Tetrade.',w:'2 = 0010, 7 = 0111 → <span class="hl">0010 0111</span> (BCD). Nicht zu verwechseln mit der reinen Dualzahl 11011₂!'},
+ {t:'calc',q:'Wandle die Dezimalzahl <b>9</b> in <b>BCD</b> um.',ans:['1001'],ph:'z. B. 1001',w:'9 = <span class="hl">1001</span> — eine einzelne Tetrade.'},
+];
+
+/* ---------- 2) Rechnen mit Binärwerten (Folien 63–70) ---------- */
+const RECHNEN=[
+ {t:'calc',q:'Berechne die <b>Binär-Addition</b>: <span class="mono">1001 + 100</span>',ans:['1101'],ph:'z. B. 1101',w:'Wie schriftlich addieren: 1001 + 0100 = <span class="hl">1101</span> (Regel: 1+1 = 10 mit Übertrag).'},
+ {t:'mc',q:'Was ergibt <b>1 + 1</b> in der binären Addition?',o:['10 (mit Übertrag)','1','11','0'],a:0,w:'1 + 1 = <span class="hl">10</span>: eine 0 wird hingeschrieben, die 1 ist der <b>Übertrag</b> in die nächste Stelle.'},
+ {t:'calc',q:'Berechne die <b>Binär-Subtraktion</b>: <span class="mono">1100 − 1001</span>',ans:['0011','11'],ph:'z. B. 0011',hint:'0 − 1 = 1 mit Entlehnung (Übertrag).',w:'1100 − 1001 = <span class="hl">0011</span> (= 12 − 9 = 3). Bei 0 − 1 entsteht eine Entlehnung in die nächste Stelle.'},
+ {t:'calc',q:'Berechne die <b>Binär-Multiplikation</b>: <span class="mono">1101 · 1001</span>',ans:['1110101'],ph:'z. B. 1110101',hint:'Wie schriftlich: für jede 1 im Multiplikator die obere Zahl verschoben hinschreiben, dann addieren.',w:'1101 (13) · 1001 (9) = 117 = <span class="hl">1110101₂</span>.'},
+ {t:'calc',q:'Berechne die <b>Binär-Division</b>: <span class="mono">1000010 : 11</span>',ans:['10110'],ph:'z. B. 10110',w:'1000010 (66) : 11 (3) = <span class="hl">10110₂</span> (= 22). Vorgehen wie schriftliche Division.'},
+ {t:'mc',q:'Warum benutzt man in der Digitaltechnik die <b>Zweierkomplementbildung</b>?',o:['Weil es für die Subtraktion keine eigene logische Verknüpfung gibt — man addiert stattdessen das Komplement','Weil Addition zu langsam ist','Weil Binärzahlen sonst zu lang werden','Weil Hardware kein 0-Bit kennt'],a:0,w:'Für die Subtraktion gibt es keine logische Verknüpfung. Man bildet das Zweierkomplement der negativen Zahl und <span class="hl">addiert</span> — das Ergebnis entspricht der Subtraktion.'},
+ {t:'calc',q:'Bilde das <b>Zweierkomplement</b> von <span class="mono">0110</span> (4 Bit).',ans:['1010'],ph:'z. B. 1010',hint:'Erst alle Bits invertieren (Einerkomplement), dann + 1.',w:'Invertieren: 0110 → 1001. Plus 1: 1001 + 0001 = <span class="hl">1010</span>.'},
+ {t:'calc',q:'Rechne <span class="mono">0010 − 0110</span> über das <b>Zweierkomplement</b> (4-Bit-Ergebnis).',ans:['1100'],ph:'z. B. 1100',hint:'Zweierkomplement von 0110 ist 1010. Dann 0010 + 1010.',w:'2 − 6 = 2 + (−6). Zweierkomplement(0110) = 1010. 0010 + 1010 = <span class="hl">1100</span> (= −4 im Zweierkomplement).'},
+ {t:'steps',title:'Subtraktion über Zweierkomplement: <span class="mono">0010 − 0110</span>',sub:'(2 − 6 = −4, alles 4 Bit)',steps:[
+   {q:'Was ist der erste Schritt?',o:['Zweierkomplement der zu subtrahierenden (negativen) Zahl 0110 bilden','Beide Zahlen invertieren','Die größere Zahl invertieren','Direkt subtrahieren'],a:0,w:'Man bildet zuerst das Zweierkomplement der <b>negativen</b> Zahl (hier 0110) und macht aus der Subtraktion eine Addition.'},
+   {q:'Invertiere 0110 (Einerkomplement):',o:['1001','0110','1010','1100'],a:0,w:'Jedes Bit kippen: 0110 → <span class="hl">1001</span>.'},
+   {q:'Addiere 1 → Zweierkomplement von 0110:',o:['1010','1000','1001','1011'],a:0,w:'1001 + 1 = <span class="hl">1010</span>.'},
+   {q:'Berechne 0010 + 1010 =',o:['1100','1110','1000','0100'],a:0,w:'0010 + 1010 = <span class="hl">1100</span>.'},
+   {q:'Was bedeutet 1100 als Zweierkomplement-Zahl?',o:['−4','12','4','−12'],a:0,w:'MSB = 1 → negativ. Zurück: 1100 invertieren → 0011, +1 → 0100 = 4, also <span class="hl">−4</span>. Passt zu 2 − 6 = −4.'},
+ ]},
+ {t:'mc',q:'⚠️ Du sollst <b>5 − 3</b> per Zweierkomplement rechnen. Von <b>welcher Zahl</b> bildest du das Zweierkomplement?',o:['Nur von 3 (dem Subtrahenden)','Von 5','Von beiden','Von keiner'],a:0,w:'Nur die <b>zu subtrahierende</b> Zahl (3) wird ins Zweierkomplement gebracht und dann addiert. Häufiger Fehler: das Komplement der positiven Zahl (5) zu bilden — das wäre falsch.'},
+];
+
+/* ---------- 3) Gleitkommazahlen / IEEE 754 (Folien 71–96) ---------- */
+const IEEE=[
+ {t:'steps',title:'Dezimalzahl <b>18,4</b> als <b>float</b> (IEEE 754, 32 Bit)',sub:'Vorzeichen · 8-Bit-Exponent (Bias 127) · 23-Bit-Mantisse',steps:[
+   {q:'Wandle den Vorkommateil 18 ins Dualsystem um:',o:['10010','10100','11000','10001'],a:0,w:'18 = 16 + 2 = <span class="hl">10010₂</span>.'},
+   {q:'Der Nachkommateil 0,4 ergibt welches sich wiederholende Muster?',o:['0110 0110 0110…','1010 1010…','1100 1100…','0011 0011…'],a:0,w:'0,4·2=0,8→0; 0,8·2=1,6→1; 0,6·2=1,2→1; 0,2·2=0,4→0 … → <span class="hl">0110 0110…</span> (periodisch, nicht exakt darstellbar!).'},
+   {q:'Zusammen: 10010,0110011… · 2⁰. Normalisieren (Komma hinter die erste 1):',o:['1,00100110011… · 2⁴','1,0010011… · 2⁵','1,0010… · 2³','10,010… · 2³'],a:0,w:'Das Komma um 4 Stellen nach links → Exponent +4 → <span class="hl">1,001001100110… · 2⁴</span>.'},
+   {q:'Biased Exponent für float (Bias 127): 4 + 127 =',o:['131','123','135','128'],a:0,w:'4 + 127 = <span class="hl">131</span>.'},
+   {q:'131 als 8-Bit-Binärzahl:',o:['10000011','10000111','10000001','11000011'],a:0,w:'131 = 128 + 2 + 1 = <span class="hl">10000011</span>.'},
+   {q:'Setze zusammen — Vorzeichen | Exponent | Mantisse (23 Bit):',o:['0|10000011|00100110011001100110011','1|10000011|00100110011001100110011','0|10000111|00100110011001100110011','0|10000011|10010011001100110011001'],a:0,w:'Positiv → VZ 0; Exponent 10000011; die ersten 23 Mantissenbits (nach „1,“) → <span class="hl">0 10000011 00100110011001100110011</span>.'},
+ ]},
+ {t:'mc',q:'Wie ist eine <b>float</b>-Zahl (32 Bit, Single Precision) aufgebaut?',o:['1 Bit Vorzeichen, 8 Bit Exponent, 23 Bit Mantisse','1 / 11 / 52','1 / 7 / 24','1 / 8 / 24'],a:0,w:'Single Precision (float): <span class="hl">1 Vorzeichen, 8 Exponent (Bias 127), 23 Mantisse</span>.'},
+ {t:'mc',q:'Wie ist eine <b>double</b>-Zahl (64 Bit, Double Precision) aufgebaut?',o:['1 Bit Vorzeichen, 11 Bit Exponent, 52 Bit Mantisse','1 / 8 / 23','1 / 15 / 48','1 / 10 / 53'],a:0,w:'Double Precision (double): <span class="hl">1 Vorzeichen, 11 Exponent (Bias 1023), 52 Mantisse</span>.'},
+ {t:'calc',q:'Wie groß ist der <b>Bias</b> beim Exponenten einer <b>float</b>-Zahl (32 Bit)?',ans:['127'],ph:'z. B. 127',w:'Single Precision verwendet einen <span class="hl">Bias von 127</span> (8-Bit-Exponent).'},
+ {t:'calc',q:'Wie groß ist der <b>Bias</b> beim Exponenten einer <b>double</b>-Zahl (64 Bit)?',ans:['1023'],ph:'z. B. 1023',w:'Double Precision verwendet einen <span class="hl">Bias von 1023</span> (11-Bit-Exponent).'},
+ {t:'mc',q:'Was bestimmt die <b>Genauigkeit</b> einer Gleitkommazahl?',o:['Die Mantisse','Der Exponent','Das Vorzeichen','Die Basis'],a:0,w:'Je größer die <b>Mantisse</b>, desto genauer ist die Zahl hinter dem Komma → <span class="hl">Mantisse = Genauigkeit</span>.'},
+ {t:'mc',q:'Was bestimmt den <b>Wertebereich</b> (die Größe) einer Gleitkommazahl?',o:['Der Exponent','Die Mantisse','Das Vorzeichen','Die Anzahl Bits gesamt'],a:0,w:'Der <b>Exponent</b> bestimmt, wie groß bzw. klein die Zahl werden kann → <span class="hl">Exponent = Wertebereich</span>.'},
+ {t:'mc',q:'Welche Grundform hat die Gleitkommadarstellung?',o:['Vorzeichen · Mantisse · Basis^Exponent','Mantisse + Exponent','Vorzeichen + Mantisse / Exponent','Basis · Vorzeichen^Exponent'],a:0,w:'Allgemein: <span class="hl">V · M · B^E</span> — Vorzeichen mal Mantisse mal Basis hoch Exponent.'},
+ {t:'mc',q:'Welcher <b>Rundungsmodus</b> wird bei IEEE 754 am häufigsten verwendet?',o:['Runden zur nächsten darstellbaren Zahl','Immer aufrunden','Immer abrunden','Immer Richtung 0'],a:0,w:'Am sinnvollsten und häufigsten ist das <span class="hl">Runden zur nächsten darstellbaren Zahl</span> (bei genau zwischen zwei Zahlen → so, dass das niederwertigste Bit 0 wird).'},
+ {t:'self',tag:'IEEE 754',task:'Rechne die float-Zahl <b>0 | 10000011 | 00100110011001100110011</b> zurück in eine Dezimalzahl. Nenne die Schritte.',
+  desc:'<ul><li><b>Vorzeichen</b> = 0 → positiv.</li><li><b>Exponent</b>: 10000011₂ = 131, minus Bias 127 → Exponent 4, also „· 2⁴“.</li><li><b>Mantisse</b>: „1,“ davorschreiben → 1,00100110011001100110011 · 2⁴.</li><li>Komma 4 Stellen nach rechts → 10010,0110011001100110011.</li><li>10010₂ = 18 (Vorkomma); Nachkommastellen mit 2⁻¹, 2⁻²,… addieren.</li><li>Ergebnis ≈ <b>18,3999996…</b> — wegen der periodischen 0,4 nicht exakt 18,4!</li></ul>'},
+];
+
+/* ---------- 4) Logische Verknüpfungen / Gatter (Folie 140) ---------- */
+const GATTER=[
+ {t:'mc',q:'<b>UND (AND):</b> Wann ist der Ausgang 1?',o:['Nur wenn alle Eingänge 1 sind','Wenn mindestens ein Eingang 1 ist','Wenn die Eingänge verschieden sind','Immer'],a:0,w:'Die UND-Verknüpfung liefert 1 <span class="hl">nur dann</span>, wenn alle Eingänge 1 sind.'},
+ {t:'mc',q:'<b>ODER (OR):</b> Wann ist der Ausgang 1?',o:['Wenn mindestens ein Eingang 1 ist','Nur wenn alle Eingänge 1 sind','Wenn die Eingänge gleich sind','Nie'],a:0,w:'Die ODER-Verknüpfung liefert 1, sobald <span class="hl">mindestens ein</span> Eingang 1 ist.'},
+ {t:'mc',q:'<b>XOR (Antivalenz):</b> Wann ist der Ausgang 1?',o:['Wenn die Eingänge unterschiedlich sind','Wenn beide gleich sind','Wenn beide 1 sind','Immer'],a:0,w:'XOR (Exklusiv-ODER) liefert 1, wenn sich die Eingänge <span class="hl">unterscheiden</span>.'},
+ {t:'mc',q:'<b>XNOR (Äquivalenz):</b> Wann ist der Ausgang 1?',o:['Wenn die Eingänge gleich sind','Wenn sie unterschiedlich sind','Nur wenn beide 0 sind','Nie'],a:0,w:'XNOR liefert 1, wenn die Eingänge <span class="hl">gleich</span> sind (Äquivalenz).'},
+ {t:'mc',q:'Was ist <b>NAND</b>?',o:['NICHT(A UND B)','NICHT(A ODER B)','A UND B','A XOR B'],a:0,w:'NAND = <span class="hl">NICHT(A UND B)</span> — invertiertes UND.'},
+ {t:'mc',q:'Was ist <b>NOR</b>?',o:['NICHT(A ODER B)','NICHT(A UND B)','A ODER B','A XNOR B'],a:0,w:'NOR = <span class="hl">NICHT(A ODER B)</span> — invertiertes ODER.'},
+ {t:'mc',q:'Wie viele Eingänge hat ein <b>NICHT-Gatter (Inverter)</b>?',o:['1','2','3','0'],a:0,w:'Der Inverter (NOT) hat <span class="hl">genau einen</span> Eingang und kippt dessen Wert.'},
+ {t:'calc',q:'Berechne: <b>A = 1, B = 0 → A XOR B = ?</b>',ans:['1'],ph:'0 oder 1',w:'Unterschiedliche Eingänge → XOR = <span class="hl">1</span>.'},
+ {t:'calc',q:'Berechne: <b>A = 1, B = 1 → A NAND B = ?</b>',ans:['0'],ph:'0 oder 1',w:'A UND B = 1, invertiert → NAND = <span class="hl">0</span>.'},
+ {t:'calc',q:'Berechne: <b>A = 0, B = 0 → A NOR B = ?</b>',ans:['1'],ph:'0 oder 1',w:'A ODER B = 0, invertiert → NOR = <span class="hl">1</span>.'},
+ {t:'calc',q:'Berechne: <b>A = 1, B = 0 → A AND B = ?</b>',ans:['0'],ph:'0 oder 1',w:'Nicht alle Eingänge 1 → UND = <span class="hl">0</span>.'},
+];
+
+/* ---------- 5) Schaltalgebra & De Morgan (Folien 160–166) ---------- */
+const ALGEBRA=[
+ {t:'mc',q:'<b>De Morgan:</b> <span class="mono">¬(A ∧ B)</span> = ?',o:['¬A ∨ ¬B','¬A ∧ ¬B','A ∨ B','¬(A ∨ B)'],a:0,w:'Erstes De-Morgan-Gesetz: <span class="hl">¬(A ∧ B) = ¬A ∨ ¬B</span> — Negation umgedreht, UND wird ODER.'},
+ {t:'mc',q:'<b>De Morgan:</b> <span class="mono">¬(A ∨ B)</span> = ?',o:['¬A ∧ ¬B','¬A ∨ ¬B','A ∧ B','¬(A ∧ B)'],a:0,w:'Zweites De-Morgan-Gesetz: <span class="hl">¬(A ∨ B) = ¬A ∧ ¬B</span> — ODER wird UND.'},
+ {t:'mc',q:'<b>Bindungsregel:</b> Was bindet stärker?',o:['UND bindet stärker als ODER','ODER bindet stärker als UND','Beide gleich stark','Hängt von der Klammerung ab'],a:0,w:'Wie „Punkt vor Strich“: <span class="hl">UND bindet stärker als ODER</span>. Deshalb können manche Klammern weggelassen werden.'},
+ {t:'mc',q:'<b>Idempotenz:</b> <span class="mono">A ∧ A</span> = ?',o:['A','0','1','¬A'],a:0,w:'A ∧ A = <span class="hl">A</span> (Idempotenzgesetz). Ebenso A ∨ A = A.'},
+ {t:'mc',q:'<b>Komplement:</b> <span class="mono">A ∧ ¬A</span> = ?',o:['0','1','A','¬A'],a:0,w:'Eine Variable und ihre Negation gleichzeitig wahr → unmöglich → <span class="hl">0</span>.'},
+ {t:'mc',q:'<b>Komplement:</b> <span class="mono">A ∨ ¬A</span> = ?',o:['1','0','A','¬A'],a:0,w:'Mindestens eines von A oder ¬A ist immer wahr → <span class="hl">1</span>.'},
+ {t:'mc',q:'<b>Neutralelement:</b> <span class="mono">A ∧ 1</span> = ?',o:['A','1','0','¬A'],a:0,w:'1 ist neutral für UND → <span class="hl">A ∧ 1 = A</span>. Analog A ∨ 0 = A.'},
+ {t:'mc',q:'<b>Dominanz:</b> <span class="mono">A ∨ 1</span> = ?',o:['1','A','0','¬A'],a:0,w:'1 dominiert das ODER → <span class="hl">A ∨ 1 = 1</span>. Analog A ∧ 0 = 0.'},
+ {t:'mc',q:'<b>Absorption:</b> <span class="mono">A ∨ (A ∧ B)</span> = ?',o:['A','B','A ∧ B','A ∨ B'],a:0,w:'Das Absorptionsgesetz: <span class="hl">A ∨ (A ∧ B) = A</span> — A „absorbiert“ den Term.'},
+ {t:'mc',q:'Wofür haben die <b>De-Morganschen Gesetze</b> große praktische Bedeutung?',o:['Zum Auflösen insgesamt negierter Ausdrücke und zur Umrechnung auf NAND/NOR','Zum Umwandeln von Zahlensystemen','Zum Minimieren von Mantissen','Zum Aufbau von Flip-Flops'],a:0,w:'Sie werden gebraucht, um <span class="hl">negierte Gesamtausdrücke aufzulösen</span> und Funktionen auf NAND- bzw. NOR-Verknüpfungen umzurechnen.'},
+];
+
+/* ---------- 6) Schaltungssynthese: Normalformen & Minimierung (Folien 173–185) ---------- */
+const NORMALFORM=[
+ {t:'mc',q:'Eine <b>disjunktive Normalform (DNF)</b> ist eine …',o:['ODER-Verknüpfung von UND-Verknüpfungen','UND-Verknüpfung von ODER-Verknüpfungen','reine Negation','einzelne Variable'],a:0,w:'DNF = <span class="hl">ODER von UND-Termen</span> (Disjunktion von Konjunktionen). Realisiert durch ein zweistufiges Schaltnetz.'},
+ {t:'mc',q:'Aus welchen Termen besteht die <b>KDNF</b> und wie werden sie verknüpft?',o:['Aus den Mintermen der Zeilen mit Funktionswert 1, ODER-verknüpft','Aus den Maxtermen der 0-Zeilen, UND-verknüpft','Aus allen Zeilen, UND-verknüpft','Aus den 0-Zeilen, ODER-verknüpft'],a:0,w:'Die kanonische DNF ist die <span class="hl">Disjunktion (ODER) der Minterme</span>, für die die Funktion 1 wird.'},
+ {t:'mc',q:'Aus welchen Termen besteht die <b>KKNF</b> und wie werden sie verknüpft?',o:['Aus den Maxtermen der Zeilen mit Funktionswert 0, UND-verknüpft','Aus den Mintermen der 1-Zeilen, ODER-verknüpft','Aus den 1-Zeilen, UND-verknüpft','Aus allen Zeilen, ODER-verknüpft'],a:0,w:'Die kanonische KNF ist die <span class="hl">Konjunktion (UND) der Maxterme</span>, für die die Funktion 0 wird.'},
+ {t:'mc',q:'Beim Aufstellen eines <b>Minterms</b>: Eine Variable, die in der Zeile mit <b>0</b> belegt ist, wird …',o:['negiert','nicht negiert','weggelassen','verdoppelt'],a:0,w:'Im Minterm wird eine mit 0 belegte Variable <span class="hl">negiert</span>, eine mit 1 belegte nicht negiert. Alle per UND verknüpft.'},
+ {t:'mc',q:'Beim Aufstellen eines <b>Maxterms</b>: Eine Variable, die mit <b>1</b> belegt ist, wird …',o:['invertiert (negiert)','nicht negiert','weggelassen','halbiert'],a:0,w:'Genau umgekehrt zum Minterm: im Maxterm wird die mit 1 belegte Variable <span class="hl">invertiert</span>, alles per ODER verknüpft.'},
+ {t:'mc',q:'Was ist ein <b>Minterm (Vollkonjunktion)</b>?',o:['Eine UND-Verknüpfung, in der jede Variable genau einmal vorkommt','Eine ODER-Verknüpfung aller Variablen','Ein einzelnes Literal','Eine negierte Konstante'],a:0,w:'Ein Minterm ist eine <span class="hl">Vollkonjunktion</span>: alle Variablen per UND verknüpft, jede genau einmal (ggf. negiert).'},
+ {t:'mc',q:'Was ist ein <b>Maxterm (Volldisjunktion)</b>?',o:['Eine ODER-Verknüpfung aller (ggf. negierten) Eingangsvariablen','Eine UND-Verknüpfung aller Variablen','Ein einzelnes Bit','Ein Übertrag'],a:0,w:'Ein Maxterm ist eine <span class="hl">Volldisjunktion</span>: alle Variablen per ODER. Er liefert nur in einem einzigen Fall eine 0.'},
+ {t:'mc',q:'Wie viele <b>KDNF</b> besitzt eine gegebene Schaltfunktion?',o:['Genau eine','Mehrere','Keine','Beliebig viele'],a:0,w:'Zu jeder Schaltfunktion gibt es <span class="hl">genau eine</span> KDNF (und genau eine KKNF). Allgemeine DNFs gibt es dagegen mehrere.'},
+ {t:'mc',q:'Wozu dient das <b>Karnaugh-Veitch-Diagramm (KV)</b>?',o:['Zur Vereinfachung/Minimierung — logische Doppelungen entfernen','Zur Umwandlung von Zahlensystemen','Zur Gleitkomma-Addition','Zum Aufbau eines Addierers'],a:0,w:'Das KV-Diagramm dient der <span class="hl">Minimierung</span> eines logischen Ausdrucks: Doppelungen werden entfernt und Überschneidungen zusammengefasst.'},
+ {t:'mc',q:'Was ist ein typisches <b>Minimierungsziel</b> bei der Schaltungssynthese?',o:['Minimale Gatterzahl','Maximale Gatterzahl','Möglichst viele Eingänge','Möglichst lange Laufzeit'],a:0,w:'Ziel ist minimaler Aufwand: z. B. <span class="hl">minimale Gatterzahl</span>, minimale Eingänge, minimale Kosten/Verlustleistung oder maximale Geschwindigkeit.'},
+ {t:'steps',title:'<b>Minterm</b> aus einer Wahrheitstabellen-Zeile bilden',sub:'Variablen A, B, C — Zeile: A = 1, B = 0, C = 1, Funktionswert f = 1',steps:[
+   {q:'f = 1 in dieser Zeile → wir bilden einen …',o:['Minterm (UND-Verknüpfung)','Maxterm (ODER-Verknüpfung)','Übertrag','Komplement'],a:0,w:'Für jede Zeile mit Funktionswert 1 wird ein <b>Minterm</b> (Vollkonjunktion, UND) gebildet.'},
+   {q:'A = 1 → A erscheint im Minterm …',o:['nicht negiert: A','negiert: ¬A','gar nicht','doppelt'],a:0,w:'Mit 1 belegt → <span class="hl">nicht negiert</span> (A).'},
+   {q:'B = 0 → B erscheint im Minterm …',o:['negiert: ¬B','nicht negiert: B','gar nicht','als 0'],a:0,w:'Mit 0 belegt → <span class="hl">negiert</span> (¬B).'},
+   {q:'C = 1 → C erscheint im Minterm …',o:['nicht negiert: C','negiert: ¬C','gar nicht','als Konstante'],a:0,w:'Mit 1 belegt → <span class="hl">nicht negiert</span> (C).'},
+   {q:'Der vollständige Minterm lautet:',o:['A ∧ ¬B ∧ C','¬A ∧ B ∧ ¬C','A ∨ ¬B ∨ C','A ∧ B ∧ C'],a:0,w:'Alle drei per UND: <span class="hl">A ∧ ¬B ∧ C</span>.'},
+ ]},
+];
+
+/* ---------- 7) Halbaddierer & Volladdierer (Digitaltechnik 2) ---------- */
+const ADDIERER=[
+ {t:'mc',q:'Wie viele <b>Eingänge</b> hat ein <b>Halbaddierer</b>?',o:['2','3','1','4'],a:0,w:'Der Halbaddierer hat <span class="hl">2 Eingänge</span> (A, B) und 2 Ausgänge (Summe S und Übertrag C).'},
+ {t:'mc',q:'Wie berechnet sich die <b>Summe S</b> beim Halbaddierer?',o:['S = A XOR B','S = A AND B','S = A OR B','S = ¬A'],a:0,w:'Die Summe ist die <span class="hl">XOR-Verknüpfung</span>: S = A XOR B (1, wenn genau einer der Eingänge 1 ist).'},
+ {t:'mc',q:'Wie berechnet sich der <b>Übertrag C</b> beim Halbaddierer?',o:['C = A AND B','C = A XOR B','C = A OR B','C = ¬B'],a:0,w:'Der Übertrag ist die <span class="hl">UND-Verknüpfung</span>: C = A AND B (nur 1, wenn beide Eingänge 1 sind).'},
+ {t:'mc',q:'Wie viele <b>Eingänge</b> hat ein <b>Volladdierer</b>?',o:['3 (x, y, Cin)','2','4','1'],a:0,w:'Der Volladdierer hat <span class="hl">3 Eingänge</span>: x, y und den eingehenden Übertrag Cin.'},
+ {t:'mc',q:'Woraus baut man einen <b>Volladdierer</b> auf?',o:['Aus zwei Halbaddierern (+ ODER-Gatter für die Überträge)','Aus einem Halbaddierer','Aus drei XOR-Gattern','Aus einem Flip-Flop'],a:0,w:'Ein Volladdierer entsteht aus <span class="hl">zwei Halbaddierern</span>; die beiden Überträge werden per ODER zum Cout zusammengeführt.'},
+ {t:'mc',q:'Warum reicht ein <b>Halbaddierer</b> nicht, um mehrstellige Binärzahlen zu addieren?',o:['Er kann keinen eingehenden Übertrag (Cin) verarbeiten','Er hat zu viele Ausgänge','Er ist zu langsam','Er kann nur subtrahieren'],a:0,w:'Der Halbaddierer hat keinen Cin-Eingang. Für mehrstellige Addition braucht man den <span class="hl">Volladdierer</span>, der den Übertrag der vorigen Stelle berücksichtigt.'},
+ {t:'calc',q:'<b>Halbaddierer:</b> A = 1, B = 1 → Summe <b>S</b> = ?',ans:['0'],ph:'0 oder 1',w:'S = A XOR B = 1 XOR 1 = <span class="hl">0</span> (mit Übertrag C = 1).'},
+ {t:'calc',q:'<b>Halbaddierer:</b> A = 1, B = 1 → Übertrag <b>C</b> = ?',ans:['1'],ph:'0 oder 1',w:'C = A AND B = 1 AND 1 = <span class="hl">1</span>.'},
+ {t:'calc',q:'<b>Volladdierer:</b> x = 1, y = 1, Cin = 1 → Summe <b>S</b> = ?',ans:['1'],ph:'0 oder 1',w:'1 + 1 + 1 = 3 = 11₂ → S = <span class="hl">1</span>, Cout = 1.'},
+ {t:'calc',q:'<b>Volladdierer:</b> x = 1, y = 1, Cin = 1 → <b>Cout</b> = ?',ans:['1'],ph:'0 oder 1',w:'1 + 1 + 1 = 11₂ → Cout = <span class="hl">1</span> (und S = 1).'},
+ {t:'self',tag:'Addierer',task:'Erkläre den <b>Unterschied zwischen Halbaddierer und Volladdierer</b> (Eingänge, Ausgänge, Aufbau).',
+  desc:'<ul><li><b>Halbaddierer:</b> 2 Eingänge (A, B), 2 Ausgänge — Summe <b>S = A XOR B</b>, Übertrag <b>C = A AND B</b>. Kann keinen eingehenden Übertrag verarbeiten.</li><li><b>Volladdierer:</b> 3 Eingänge (x, y, <b>Cin</b>), 2 Ausgänge (S, Cout). Verarbeitet auch den Übertrag der vorherigen Stelle.</li><li><b>Aufbau:</b> Ein Volladdierer wird aus <b>zwei Halbaddierern</b> plus einem ODER-Gatter (für die beiden Überträge) zusammengesetzt.</li><li><b>Nutzen:</b> Erst der Volladdierer erlaubt die Addition mehrstelliger Binärzahlen (Kettenaddierer).</li></ul>'},
+];
+
+/* ---------- 8) Sequenzielle Schaltungen (Folien 201–202) ---------- */
+const SEQUENZIELL=[
+ {t:'mc',q:'Was kennzeichnet eine <b>sequenzielle Schaltung (Schaltwerk)</b>?',o:['Die Ausgänge hängen von aktuellen UND früheren Eingangsbelegungen ab','Die Ausgänge hängen nur von den aktuellen Eingängen ab','Sie hat keine Eingänge','Sie ist immer kombinatorisch'],a:0,w:'Bei einem Schaltwerk hängen die Ausgänge auch von <span class="hl">früheren</span> Eingangsbelegungen ab — z. B. y = f(x, y). Im Gegensatz dazu steht das reine Schaltnetz.'},
+ {t:'mc',q:'Was ist die <b>Basiseinheit</b> einer sequenziellen Schaltung?',o:['Das Flip-Flop','Der Halbaddierer','Das UND-Gatter','Der Multiplexer'],a:0,w:'Das <span class="hl">Flip-Flop</span> ist die Basiseinheit — eine Box mit 2–3 Eingängen und 2 Ausgängen.'},
+ {t:'mc',q:'Wie viele <b>stabile Zustände</b> hat ein Flip-Flop?',o:['2 (bi-stabil)','1','3','0'],a:0,w:'Ein Flip-Flop ist <span class="hl">bi-stabil</span> (2 stabile Zustände) — im Gegensatz zum Monoflop mit nur einem stabilen Zustand.'},
+ {t:'mc',q:'Wie viel Information speichert ein Flip-Flop?',o:['Genau 1 Bit','1 Byte','4 Bit (eine Tetrade)','Beliebig viel'],a:0,w:'Das Flip-Flop ist die <span class="hl">kleinste Speicherzelle</span> und speichert genau eine Informationseinheit (1 Bit).'},
+ {t:'mc',q:'Der <b>zweite Ausgang</b> eines Flip-Flops ist in der Regel …',o:['das Komplement des ersten Ausgangs','identisch zum ersten Ausgang','immer 0','der Takteingang'],a:0,w:'Der 2. Ausgang stellt in der Regel das <span class="hl">Komplement</span> des 1. Ausgangs dar.'},
+ {t:'mc',q:'Worin unterscheidet sich ein <b>Flip-Flop</b> von einem <b>Monoflop</b>?',o:['Flip-Flop hat 2 stabile Zustände, Monoflop nur 1','Monoflop hat 2, Flip-Flop nur 1','Beide haben keinen stabilen Zustand','Sie sind identisch'],a:0,w:'Das Flip-Flop ist bi-stabil (2 stabile Zustände), das Monoflop hat nur <span class="hl">einen</span> stabilen Zustand.'},
+ {t:'mc',q:'Welche CPU-Elemente werden durch sequenzielle Schaltungen realisiert?',o:['Register, Zähler, Schieberegister','Nur der Quarzoszillator','Der Kühlkörper','Die Stromversorgung'],a:0,w:'Wesentliche CPU-Bausteine wie <span class="hl">Register, Zähler und Schieberegister</span> werden durch sequenzielle Schaltungen realisiert.'},
+ {t:'mc',q:'Warum sagt man, ein Flip-Flop habe ein „<b>Gedächtnis</b>“?',o:['Weil der Ausgang auch von früheren Eingangsbelegungen abhängt','Weil es Strom speichert','Weil es Zahlen rechnet','Weil es einen Takt erzeugt'],a:0,w:'Das „Gedächtnis“ entsteht dadurch, dass der Ausgang <span class="hl">nicht nur von aktuellen, sondern auch von früheren</span> Eingangsbelegungen abhängt.'},
+];
+
+/* ---------- 9) Codes & BCD / Double-Dabble (Folien 57–62, 111–113) ---------- */
+const CODES=[
+ {t:'mc',q:'Was ist eine <b>Codierung</b> (nach DIN 44300)?',o:['Eine Abbildungsvorschrift, die jedem Zeichen eines Zeichenvorrats eindeutig ein Zeichen oder eine Zeichenfolge zuordnet','Ein Verfahren zum Verbergen von Inhalten','Eine Methode zur Zahlenaddition','Eine Form der Komprimierung'],a:0,w:'Ein Code ist eine <span class="hl">Abbildungsvorschrift</span>, die jedem Zeichen eines Zeichenvorrats (Urbildmenge) eindeutig ein Zeichen/eine Zeichenfolge eines möglicherweise anderen Vorrats (Bildmenge) zuordnet.'},
+ {t:'mc',q:'Was ist der Unterschied zwischen <b>Codierung</b> und <b>Verschlüsselung</b>?',o:['Verschlüsselung verändert Daten bewusst, um den Inhalt zu verbergen; Codierung nicht','Sie sind dasselbe','Codierung verbirgt den Inhalt, Verschlüsselung nicht','Verschlüsselung wandelt nur Zahlensysteme um'],a:0,w:'Codierung wandelt ohne Geheimhaltung in eine andere Form um; <span class="hl">Verschlüsselung verbirgt bewusst den Inhalt</span>. Beides sollte nicht verwechselt werden.'},
+ {t:'mc',q:'Wie wird im <b>BCD-Code</b> jede Dezimalziffer dargestellt?',o:['Durch eine eigene 4-Bit-Tetrade','Durch 8 Bit','Durch eine Hexadezimalziffer','Durch ein Vorzeichen'],a:0,w:'Jede Dezimalziffer erhält ihre eigene <span class="hl">4-Bit-Tetrade</span>. So bleibt jede Ziffer einzeln ablesbar.'},
+ {t:'calc',q:'Wandle die Dezimalzahl <b>42</b> in <b>BCD</b> um.',ans:['01000010'],ph:'z. B. 01000010',hint:'Jede Ziffer einzeln als 4-Bit-Tetrade.',w:'4 = 0100, 2 = 0010 → <span class="hl">0100 0010</span> (BCD).'},
+ {t:'mc',q:'<b>Double-Dabble:</b> Was wird nach jeder Verschiebung mit BCD-Ziffern ≥ 5 gemacht?',o:['Es werden 3 addiert','Es wird 1 subtrahiert','Sie werden gelöscht','Sie werden verdoppelt'],a:0,w:'Nach jeder Linksverschiebung wird zu jeder BCD-Ziffer, die <span class="hl">≥ 5</span> ist, eine <span class="hl">3</span> addiert (Shift-and-Add-3).'},
+ {t:'mc',q:'<b>Double-Dabble:</b> Warum funktioniert der Linksshift?',o:['Jeder Linksshift multipliziert alle BCD-Ziffern mit 2','Er addiert immer 1','Er teilt durch 2','Er invertiert die Bits'],a:0,w:'Ein Linksshift <span class="hl">verdoppelt</span> alle BCD-Ziffern. Würde eine Ziffer ≥ 5 verdoppelt, käme ≥ 10 heraus — die +3-Korrektur sorgt für den richtigen Übertrag in die nächste Dezimalstelle.'},
+ {t:'steps',title:'<b>Double-Dabble</b> verstehen (Binär → BCD)',sub:'Das Prinzip „Shift-and-Add-3“',steps:[
+   {q:'Double-Dabble wandelt um von …',o:['Binär → BCD','Dezimal → Hexadezimal','BCD → Gleitkomma','Hex → Oktal'],a:0,w:'Der Algorithmus konvertiert eine <span class="hl">Binärzahl in BCD</span>, ohne zu dividieren.'},
+   {q:'Pro Bit der Binärzahl wird …',o:['einmal nach links geschoben','einmal addiert','durch 2 geteilt','negiert'],a:0,w:'Für jedes Bit wird genau <span class="hl">einmal nach links geschoben</span>; das MSB der Binärzahl rückt ins LSB des BCD-Teils.'},
+   {q:'Nach dem Schieben bekommen BCD-Ziffern ≥ 5 …',o:['+3 addiert','−3 subtrahiert','+5 addiert','nichts'],a:0,w:'Jede BCD-Ziffer ≥ 5 wird um <span class="hl">3 erhöht</span>.'},
+   {q:'Wie groß darf eine BCD-Ziffer (Tetrade) maximal sein?',o:['9','15','16','5'],a:0,w:'Eine BCD-Ziffer darf maximal <span class="hl">9</span> sein — sonst entstünde eine Pseudotetrade.'},
+   {q:'Warum gerade „+3“ bei ≥ 5?',o:['Weil der nächste Shift verdoppelt: aus +3 wird +6 — das überbrückt die Lücke zwischen Binär (16) und BCD (10) und erzeugt den Dezimalübertrag','Reiner Zufall','Um Speicher zu sparen','Um die Zahl zu negieren'],a:0,w:'Beim nächsten Shift wird die addierte 3 zu 6 — genau der Unterschied zwischen 16er-Binär und 10er-BCD. Außerdem erzeugt das den <span class="hl">Übertrag in die nächste Dezimalstelle</span>.'},
+ ]},
+];
+
+/* ============ MODI ============ */
+const MODES={
+ wandlung:   {name:'Zahlensystem-Wandlung', icon:'🔢', col:'vi', kind:'mc', bank:WANDLUNG,   desc:'Dezimal ↔ Binär ↔ Hexadezimal ↔ BCD, auch Brüche. Methoden + Rechnen mit Eingabe.'},
+ rechnen:    {name:'Rechnen mit Binärwerten', icon:'➕', col:'gr', kind:'mc', bank:RECHNEN,    desc:'Addition, Subtraktion, Multiplikation, Division & Subtraktion über das Zweierkomplement.'},
+ ieee:       {name:'Gleitkommazahlen (IEEE 754)', icon:'🎚️', col:'vi', kind:'mc', bank:IEEE, desc:'Vorzeichen · Exponent · Mantisse, Bias, float/double, 18,4 als float Schritt für Schritt.'},
+ gatter:     {name:'Logische Verknüpfungen', icon:'🔌', col:'gr', kind:'mc', bank:GATTER,     desc:'AND, OR, NOT, XOR, NAND, NOR, XNOR — Verhalten erkennen und Ausgänge berechnen.'},
+ algebra:    {name:'Schaltalgebra & De Morgan', icon:'📐', col:'vi', kind:'mc', bank:ALGEBRA,  desc:'Grundgesetze der Booleschen Algebra, De Morgan, Bindungsregel, Absorption.'},
+ normalform: {name:'Normalformen & Minimierung', icon:'🧩', col:'gr', kind:'mc', bank:NORMALFORM, desc:'Wahrheitstabelle → KDNF/KKNF, Minterm & Maxterm, KV-Diagramm, Minimierungsziele.'},
+ addierer:   {name:'Halb- & Volladdierer', icon:'🧮', col:'vi', kind:'mc', bank:ADDIERER,     desc:'Summe & Übertrag, Eingänge, Aufbau des Volladdierers aus zwei Halbaddierern.'},
+ sequenziell:{name:'Sequenzielle Schaltungen', icon:'🔁', col:'gr', kind:'mc', bank:SEQUENZIELL, desc:'Schaltwerk vs. Schaltnetz, Flip-Flop-Grundlagen, bi-stabil, Gedächtnis.'},
+ codes:      {name:'Codes & BCD / Double-Dabble', icon:'🔤', col:'vi', kind:'mc', bank:CODES,  desc:'Codierung vs. Verschlüsselung, BCD-Tetraden, Double-Dabble (Shift-and-Add-3).'},
+};
+
+
+/* ============ FRAGEN-REGISTER (stabile IDs für „Alle Themen" & „Falsche wiederholen") ============ */
+const REG={};
+Object.keys(MODES).forEach(mk=>{
+ MODES[mk].bank.forEach((it,idx)=>{ const id=mk+':'+idx; it._id=id; REG[id]={mode:mk,item:it}; });
+});
+const TOTALQ=Object.keys(REG).length;
+
+/* ============ BADGES ============ */
+const BADGES=[
+ {id:'first', e:'🚀', n:'Erster Lauf', d:'Erste Session beendet', chk:s=>s.sessions>=1},
+ {id:'perfect', e:'💯', n:'Makellos', d:'Eine Session zu 100%', chk:s=>s.hadPerfect},
+ {id:'combo10', e:'🔥', n:'Combo 10', d:'10 in Folge richtig', chk:s=>s.bestComboEver>=10},
+ {id:'c100', e:'🎯', n:'Hundert', d:'100 richtige Antworten', chk:s=>s.totalCorrect>=100},
+ {id:'allmodes', e:'🧭', n:'Allrounder', d:'Jeden Modus gespielt', chk:s=>Object.keys(MODES).every(m=>s.perMode[m]&&s.perMode[m].answered>0)},
+ {id:'lvl5', e:'⭐', n:'Level 5', d:'Level 5 erreicht', chk:s=>levelInfo(s.xp).level>=5},
+ {id:'streak3', e:'📅', n:'3-Tage-Streak', d:'An 3 Tagen geübt', chk:s=>s.dayStreak>=3},
+ {id:'ieee10', e:'🎚️', n:'IEEE-Profi', d:'10 IEEE-754-Fragen richtig', chk:s=>s.perMode.ieee&&s.perMode.ieee.correct>=10},
+ {id:'fullmaster', e:'🏆', n:'Komplett', d:'Jede Frage 1× gemeistert', chk:s=>s.mastered.length>=TOTALQ},
+];
+
+/* ============ STATE ============ */
+const KEY='dtKlausurTrainer_v1';            // Gast / unbenannter Fortschritt
+const PKEY='dtKlausurTrainer_profiles_v1';  // { name: stateObject }
+const AKEY='dtKlausurTrainer_active_v1';    // Name des aktiven Profils ('' = Gast)
+const defState={xp:0,totalCorrect:0,sessions:0,dayStreak:0,lastPlay:'',bestComboEver:0,hadPerfect:false,perMode:{},badges:[],mastered:[],wrong:[],marked:[]};
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function readJSON(k,fb){try{const r=localStorage.getItem(k);return r?JSON.parse(r):fb;}catch(e){return fb;}}
+function writeJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function loadProfiles(){const p=readJSON(PKEY,{});return(p&&typeof p==='object')?p:{};}
+function saveProfiles(p){writeJSON(PKEY,p);}
+function activeName(){try{return localStorage.getItem(AKEY)||'';}catch(e){return'';}}
+function setActiveName(n){try{n?localStorage.setItem(AKEY,n):localStorage.removeItem(AKEY);}catch(e){}}
+let state=load();
+function load(){
+ const n=activeName();
+ if(n){const p=loadProfiles();if(p[n])return Object.assign(clone(defState),p[n]);}
+ return Object.assign(clone(defState),readJSON(KEY,{}));   // Gast
+}
+function save(){
+ const n=activeName();
+ if(n){const p=loadProfiles();p[n]=state;saveProfiles(p);}
+ else writeJSON(KEY,state);
+}
+
+function levelInfo(xp){let lvl=1,need=100,acc=0;while(xp>=acc+need){acc+=need;lvl++;need=100+(lvl-1)*25;}return{level:lvl,into:xp-acc,need:need};}
+
+/* ============ SESSION ============ */
+let sess=null;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* Pseudo-Modi: „alle" (alle Themen gemischt) und „wiederholen" (zuletzt falsche) */
+function modeMeta(id){
+ if(id==='alle')return{name:'Alle Themen',icon:'🎲',col:'gr',desc:'Fragen aus allen 9 Themen – bunt gemischt, wie in der Klausur.'};
+ if(id==='wiederholen')return{name:'Falsche wiederholen',icon:'🔁',col:'vi',desc:'Nur die Fragen, die du zuletzt falsch hattest – gezielt nacharbeiten.'};
+ if(id==='markiert')return{name:'Markierte Fragen',icon:'🔖',col:'vi',desc:'Nur die Fragen, die du dir markiert hast – gezielt wiederholen.'};
+ return MODES[id];
+}
+function modeTitle(id){return modeMeta(id).name;}
+function buildPool(id){
+ if(id==='alle'){const all=[];Object.keys(MODES).forEach(mk=>MODES[mk].bank.forEach(it=>all.push({mode:mk,item:it})));return all;}
+ if(id==='wiederholen')return state.wrong.map(qid=>REG[qid]).filter(Boolean).map(r=>({mode:r.mode,item:r.item}));
+ if(id==='markiert')return state.marked.map(qid=>REG[qid]).filter(Boolean).map(r=>({mode:r.mode,item:r.item}));
+ return MODES[id].bank.map(it=>({mode:id,item:it}));
+}
+
+function startSession(mode,count){
+ const base=shuffle(buildPool(mode));
+ if(!base.length){goHome();return;}
+ let pool=base;
+ if(count!==Infinity){
+   if(count<base.length) pool=base.slice(0,count);
+   else{ pool=base.slice(); while(pool.length<count) pool=pool.concat(shuffle(base)); pool=pool.slice(0,count); }
+ }
+ sess={modeId:mode,base:base,pool:pool,i:0,count:(count===Infinity?Infinity:pool.length),correct:0,combo:0,bestCombo:0,startXp:state.xp,_lastGain:0,_p:0};
+ $('home').classList.add('hidden');$('results').classList.add('hidden');$('train').classList.remove('hidden');
+ nextQuestion();
+}
+function startWiederholen(){ const n=state.wrong.length; if(!n){goHome();return;} startSession('wiederholen',n); }
+function startMarkiert(){ const n=state.marked.length; if(!n){goHome();return;} startSession('markiert',n); }
+
+function nextQuestion(){
+ if(sess.count!==Infinity && sess.i>=sess.count){endSession();return;}
+ let entry;
+ if(sess.count===Infinity){ if(sess._p>=sess.pool.length){sess.pool=shuffle(sess.base);sess._p=0;} entry=sess.pool[sess._p++]; }
+ else entry=sess.pool[sess.i];
+ sess.i++;
+ sess.curMode=entry.mode; sess.curId=entry.item._id;
+ const m=MODES[entry.mode];
+ updateBar();
+ const kind=entry.item.t||m.kind;
+ if(kind==='calc') renderCalc(entry.item,m);
+ else if(kind==='steps') renderSteps(entry.item,m);
+ else if(kind==='self') renderSelf(entry.item,m);
+ else renderMC(entry.item,m);
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateBar(){
+ $('qCount').textContent=sess.count===Infinity?('#'+sess.i):(sess.i+' / '+sess.count);
+ $('progFill').style.width=sess.count===Infinity?'100%':Math.round((sess.i-1)/sess.count*100)+'%';
+ $('comboBadge').textContent=sess.combo>=2?('🔥 '+sess.combo):'';
+}
+
+/* ---- scoring ---- */
+function answered(ok,mul){
+ mul=mul===undefined?1:mul;
+ const mk=sess.curMode, id=sess.curId;
+ if(!state.perMode[mk])state.perMode[mk]={answered:0,correct:0};
+ state.perMode[mk].answered++;
+ if(ok){
+   sess.correct++;state.totalCorrect++;sess.combo++;
+   if(sess.combo>sess.bestCombo)sess.bestCombo=sess.combo;
+   if(sess.combo>state.bestComboEver)state.bestComboEver=sess.combo;
+   state.perMode[mk].correct++;
+   if(id&&!state.mastered.includes(id))state.mastered.push(id);
+   const wi=state.wrong.indexOf(id);if(wi>=0)state.wrong.splice(wi,1);
+   const gain=Math.round((10+Math.min(sess.combo,6)*2)*mul);
+   sess._lastGain=gain;state.xp+=gain;
+ } else {
+   sess.combo=0; sess._lastGain=0;
+   if(id&&!state.wrong.includes(id))state.wrong.push(id);
+ }
+ save();renderHeader();
+}
+
+/* ---- Merken / Markieren (Bookmark-Toggle auf jeder Fragenkarte) ---- */
+const BOOKMARK_SVG='<svg class="bm" viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" focusable="false"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function isMarked(id){return state.marked.indexOf(id)>=0;}
+function markBtnHtml(id){
+ const on=isMarked(id),lbl=on?'Markierung entfernen':'Frage merken';
+ return '<button type="button" class="markbtn'+(on?' on':'')+'" id="markBtn" aria-pressed="'+on+'" aria-label="'+lbl+'" title="'+lbl+'">'+BOOKMARK_SVG+'</button>';
+}
+function qHead(tagcls,label,id){
+ return '<div class="qhead"><span class="qtag '+tagcls+'">'+label+'</span>'+markBtnHtml(id)+'</div>';
+}
+function wireMarkBtn(id){
+ const b=$('markBtn');if(!b)return;
+ b.onclick=()=>{
+   const i=state.marked.indexOf(id),on=i<0;
+   if(on)state.marked.push(id);else state.marked.splice(i,1);
+   b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);
+   const lbl=on?'Markierung entfernen':'Frage merken';
+   b.setAttribute('aria-label',lbl);b.setAttribute('title',lbl);
+   b.classList.remove('pulse');void b.offsetWidth;b.classList.add('pulse');
+   save();
+ };
+}
+
+/* ---- CALC rendering (Rechnen mit Eingabe & Prüfung) ---- */
+function renderCalc(item,m){
+ const host=$('qHost');
+ const tagcls=m.col==='gr'?'gr':'';
+ host.innerHTML='<div class="qcard">'+qHead(tagcls,m.icon+' '+m.name,item._id)+
+   '<div class="prompt">'+item.q+'</div>'+
+   '<div class="calcrow"><input class="calcin" id="calcin" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="'+(item.ph||'Antwort eingeben…')+'"></div>'+
+   (item.hint?'<div class="selfhint">💡 '+item.hint+'</div>':'')+
+   '<div class="nextrow"><button class="btn primary full" id="calcChk">Prüfen</button></div>'+
+   '<div id="fbZone"></div></div>';
+ wireMarkBtn(item._id);
+ const inp=$('calcin');
+ const norm=v=>(v||'').toString().trim().replace(/\s+/g,'').replace(/\./g,',').toUpperCase();
+ const accept=item.ans.map(norm);
+ let done=false;
+ function check(){
+   if(done)return;
+   const val=norm(inp.value);
+   if(val===''){inp.focus();return;}
+   done=true; inp.disabled=true;
+   const ok=accept.indexOf(val)>=0;
+   const chk=$('calcChk'); if(chk&&chk.parentElement)chk.parentElement.remove();
+   answered(ok);
+   const why=(ok?'':'<b>Richtige Antwort:</b> <span class="mono hl">'+item.ans[0]+'</span><br>')+item.w;
+   showFeedback(ok?'ok':'no', ok?'✓ Richtig':'✗ Falsch', why);
+ }
+ $('calcChk').onclick=check;
+ inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check();}});
+ try{inp.focus({preventScroll:true});}catch(e){}
+}
+
+/* ---- MC rendering ---- */
+function renderMC(q,m){
+ const host=$('qHost');
+ const tagcls=m.col==='gr'?'gr':'';
+ let promptHtml;
+ if(m.recur){ promptHtml='<div class="recur">T(n) = '+q.rec+'</div>'; }
+ else if(m.code){ promptHtml='<div class="prompt">Bestimme die Laufzeit:</div><pre class="code">'+hl(q.code)+'</pre>'; }
+ else { promptHtml='<div class="prompt">'+q.q+'</div>'; }
+ const keys=['A','B','C','D','E'];
+ host.innerHTML='<div class="qcard">'+qHead(tagcls,m.icon+' '+m.name,q._id)+promptHtml+
+   '<div class="opts" id="opts"></div><div id="fbZone"></div></div>';
+ wireMarkBtn(q._id);
+ const opts=$('opts');
+ q.o.forEach((txt,i)=>{
+   const b=document.createElement('button');b.className='opt';
+   b.innerHTML='<span class="key">'+keys[i]+'</span><span class="mono">'+txt+'</span>';
+   b.onclick=()=>{
+     const ok=(i===q.a);
+     opts.querySelectorAll('.opt').forEach((el,j)=>{el.classList.add('locked');
+       if(q.o[j]===undefined)return;
+       if(j===q.a)el.classList.add('correct');
+       else if(j===i)el.classList.add('wrong');
+       else el.classList.add('dim');});
+     answered(ok);showFeedback(ok?'ok':'no',ok?'✓ Richtig':'✗ Falsch',q.w);
+   };
+   opts.appendChild(b);
+ });
+}
+
+/* ---- STEPS rendering (Rekursionsbaum) ---- */
+function renderSteps(item,m){
+ const host=$('qHost');
+ host.innerHTML='<div class="qcard">'+qHead('gr',m.icon+' '+m.name,item._id)+
+   '<div class="prompt" style="margin-bottom:2px">'+(item.title||item.rec)+'</div>'+
+   (item.sub?'<div class="selfhint" style="margin-top:2px">'+item.sub+'</div>':'')+
+   '<div id="stepZone"></div><div id="fbZone"></div></div>';
+ wireMarkBtn(item._id);
+ let s=0, allOk=true;
+ const keys=['A','B','C','D'];
+ function drawStep(){
+   const st=item.steps[s];
+   const zone=$('stepZone');
+   const block=document.createElement('div');
+   block.innerHTML='<div class="steplbl">Schritt '+(s+1)+' / '+item.steps.length+'</div>'+
+     '<div class="prompt" style="font-size:15.5px">'+st.q+'</div><div class="opts"></div><div class="mini"></div>';
+   zone.appendChild(block);
+   const opts=block.querySelector('.opts');
+   st.o.forEach((txt,i)=>{
+     const b=document.createElement('button');b.className='opt';
+     b.innerHTML='<span class="key">'+keys[i]+'</span><span class="mono">'+txt+'</span>';
+     b.onclick=()=>{
+       const ok=(i===st.a); if(!ok)allOk=false;
+       opts.querySelectorAll('.opt').forEach((el,j)=>{el.classList.add('locked');
+         if(j===st.a)el.classList.add('correct');else if(j===i)el.classList.add('wrong');else el.classList.add('dim');});
+       const mini=block.querySelector('.mini');
+       mini.innerHTML='<div class="fb '+(ok?'ok':'no')+'" style="margin-top:12px"><div class="why">'+st.w+'</div>'+
+         '<div class="nextrow"><button class="btn '+(s+1<item.steps.length?'ghost':'green')+' full" id="stepNext">'+
+         (s+1<item.steps.length?'Nächster Schritt →':'Aufgabe abschließen ✓')+'</button></div></div>';
+       block.querySelector('#stepNext').onclick=()=>{
+         s++;
+         if(s<item.steps.length){drawStep();block.querySelector('#stepNext').remove();window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});}
+         else{ answered(allOk); finishStepItem(allOk); }
+       };
+     };
+     opts.appendChild(b);
+   });
+ }
+ function finishStepItem(ok){
+   showFeedback(ok?'ok':'mid', ok?'✓ Alle Schritte richtig':'~ Aufgabe abgeschlossen',
+     ok?'Stark — du hast jeden Schritt richtig durchgezogen. Genau so läuft es in der Klausur.':'Kein Problem — geh die Schritte oben nochmal durch und achte besonders auf Reihenfolge und Richtung. Markier dir die Aufgabe und wiederhole sie später.');
+ }
+ drawStep();
+}
+
+/* ---- SELF-CHECK rendering ---- */
+function renderSelf(item,m){
+ const host=$('qHost');
+ host.innerHTML='<div class="qcard">'+qHead('',m.icon+' '+item.tag,item._id)+
+   '<div class="selftask">'+item.task+'</div>'+
+   '<div class="selfhint">Löse es zuerst selbst — auf Papier oder im Feld unten. Dann Musterlösung aufdecken und ehrlich bewerten.</div>'+
+   '<textarea class="selfin" id="selfin" placeholder="Optional: hier tippen…"></textarea>'+
+   '<div class="nextrow"><button class="btn primary full" id="revealBtn">Musterlösung zeigen</button></div>'+
+   '<div id="solZone"></div><div id="fbZone"></div></div>';
+ wireMarkBtn(item._id);
+ $('revealBtn').onclick=()=>{
+   $('revealBtn').parentElement.remove();
+   let sol='<div class="sol"><h4>Musterlösung</h4>'+(item.desc||'');
+   if(item.code) sol+='<pre class="code">'+hl(item.code)+'</pre>';
+   sol+='</div>';
+   sol+='<div class="steplbl" style="color:var(--vi)">Wie lief es bei dir?</div>'+
+     '<div class="rate"><button class="rbtn good" data-r="2">✓ Konnte ich</button>'+
+     '<button class="rbtn mid" data-r="1">~ Teilweise</button>'+
+     '<button class="rbtn bad" data-r="0">✗ Nicht</button></div>';
+   $('solZone').innerHTML=sol;
+   window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+   $('solZone').querySelectorAll('.rbtn').forEach(b=>{
+     b.onclick=()=>{
+       const r=+b.dataset.r;
+       $('solZone').querySelectorAll('.rbtn').forEach(x=>x.disabled=true);
+       b.style.outline='2px solid currentColor';
+       if(r===2){answered(true,1);showFeedback('ok','✓ Konnte ich','Sehr gut — diese Aufgabe sitzt. Weiter so.');}
+       else if(r===1){answered(true,0.5);showFeedback('mid','~ Teilweise','Fast — markiere dir die Stelle, die noch unsicher war, und wiederhole sie später gezielt.');}
+       else{answered(false,1);showFeedback('no','✗ Noch nicht','Kein Problem — schreib die Musterlösung einmal von Hand ab und versuche die Aufgabe in der nächsten Runde erneut.');}
+     };
+   });
+ };
+}
+
+/* ---- Feedback ---- */
+function showFeedback(kind,head,why){
+ const fb=document.createElement('div');
+ fb.className='fb '+kind;
+ const gain=(kind==='ok'&&sess._lastGain)?(' · +'+sess._lastGain+' XP'):'';
+ const last=(sess.count!==Infinity && sess.i>=sess.count);
+ fb.innerHTML='<div class="head">'+head+gain+'</div><div class="why">'+why+'</div>'+
+   '<div class="nextrow"><button class="btn '+(kind==='ok'?'green':'primary')+' full" id="nextBtn">'+(last?'Ergebnis ansehen':'Weiter →')+'</button></div>';
+ $('fbZone').appendChild(fb);
+ const nb=$('nextBtn');nb.onclick=nextQuestion;
+ fb.scrollIntoView({behavior:'smooth',block:'nearest'});
+ try{nb.focus({preventScroll:true});}catch(e){}
+}
+
+/* ---- End ---- */
+function endSession(){
+ state.sessions++;
+ const total=sess.i-(sess.count===Infinity?0:0);
+ const denom=sess.i>0?sess.i:1;
+ const pct=Math.round(sess.correct/denom*100);
+ if(sess.i>0 && sess.correct===sess.i && sess.count!==Infinity) state.hadPerfect=true;
+ const before=state.badges.slice();
+ BADGES.forEach(b=>{if(!state.badges.includes(b.id)&&b.chk(state))state.badges.push(b.id);});
+ const newOnes=state.badges.filter(id=>!before.includes(id));
+ updateStreak();save();
+ $('train').classList.add('hidden');$('results').classList.remove('hidden');
+ const pe=$('rPct');pe.textContent=pct+'%';pe.className='pct '+(pct>=80?'good':pct>=50?'midc':'low');
+ $('rSub').textContent=modeTitle(sess.modeId)+' · '+(pct>=80?'Stark!':pct>=50?'Solide — dranbleiben.':'Übung macht den Meister.');
+ $('rCorrect').textContent=sess.correct;$('rTotal').textContent=sess.i;$('rBest').textContent=sess.bestCombo;
+ $('rBadges').innerHTML=newOnes.map(id=>{const b=BADGES.find(x=>x.id===id);return '<div class="badge un pop"><div class="e">'+b.e+'</div><div class="n">'+b.n+'</div></div>';}).join('');
+ renderHeader();window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateStreak(){
+ const today=new Date().toISOString().slice(0,10);
+ if(state.lastPlay===today)return;
+ const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+ state.dayStreak=(state.lastPlay===y)?state.dayStreak+1:1;
+ state.lastPlay=today;
+}
+
+/* ============ HOME RENDER ============ */
+let setupCount=10;
+function renderHeader(){
+ const li=levelInfo(state.xp);
+ $('hdrStats').innerHTML=
+   '<div class="chip">⭐ <b>'+state.xp+'</b><span class="k">XP</span></div>'+
+   '<div class="chip">🔥 <b>'+state.dayStreak+'</b><span class="k">Streak</span></div>'+
+   '<div class="chip">✓ <b>'+state.totalCorrect+'</b><span class="k">richtig</span></div>';
+ $('lvlNum').textContent=li.level;
+ $('lvlFill').style.width=Math.round(li.into/li.need*100)+'%';
+ $('lvlText').textContent=li.into+' / '+li.need+' XP zum nächsten Level';
+ const mc=state.mastered.length;
+ $('masteredText').textContent=mc+' / '+TOTALQ;
+ $('masteredFill').style.width=Math.round(mc/TOTALQ*100)+'%';
+}
+function makeModeCard(m,acc,wide){
+ const el=document.createElement('button');el.type='button';el.className='mode '+m.col+(wide?' wide':'');
+ el.innerHTML='<span class="edge"></span><div class="ic">'+m.icon+'</div><h3>'+m.name+'</h3><p>'+m.desc+'</p><div class="acc">'+acc+'</div>';
+ return el;
+}
+function renderModes(){
+ const grid=$('modeGrid');grid.innerHTML='';
+ // Alle Themen (gemischt) – immer verfügbar
+ const aCard=makeModeCard(modeMeta('alle'),state.mastered.length+' / '+TOTALQ+' gemeistert',true);
+ aCard.onclick=()=>openSetup('alle');grid.appendChild(aCard);
+ // Falsche wiederholen – nur wenn es offene falsche Fragen gibt
+ if(state.wrong.length){
+   const wCard=makeModeCard(modeMeta('wiederholen'),state.wrong.length+' Frage'+(state.wrong.length===1?'':'n')+' offen',true);
+   wCard.onclick=startWiederholen;grid.appendChild(wCard);
+ }
+ // Markierte Fragen – nur wenn welche markiert sind
+ if(state.marked.length){
+   const mCard=makeModeCard(modeMeta('markiert'),state.marked.length+' Frage'+(state.marked.length===1?'':'n')+' markiert',true);
+   mCard.onclick=startMarkiert;grid.appendChild(mCard);
+ }
+ Object.entries(MODES).forEach(([id,m])=>{
+   const pm=state.perMode[id];
+   const acc=pm&&pm.answered?(Math.round(pm.correct/pm.answered*100)+'% · '+pm.answered+' Aufgaben'):'noch nicht geübt';
+   const el=makeModeCard(m,acc,false);
+   el.onclick=()=>openSetup(id);
+   grid.appendChild(el);
+ });
+}
+function renderBadges(){
+ $('badgeGrid').innerHTML=BADGES.map(b=>{const un=state.badges.includes(b.id);
+   return '<div class="badge '+(un?'un':'')+'"><div class="e">'+b.e+'</div><div class="n">'+b.n+'</div><div class="d">'+b.d+'</div></div>';}).join('');
+}
+function openSetup(mode){
+ if(mode==='wiederholen'){startWiederholen();return;}
+ if(mode==='markiert'){startMarkiert();return;}
+ const m=modeMeta(mode);
+ $('home').classList.add('hidden');$('results').classList.add('hidden');$('train').classList.remove('hidden');
+ $('progFill').style.width='0%';$('qCount').textContent='';$('comboBadge').textContent='';
+ const host=$('qHost');
+ const tagcls=m.col==='gr'?'gr':'';
+ host.innerHTML='<div class="qcard"><span class="qtag '+tagcls+'">'+m.icon+' '+m.name+'</span>'+
+   '<div class="prompt" style="margin-bottom:4px">'+m.icon+' '+m.name+'</div>'+
+   '<p style="color:var(--muted);font-size:14px;line-height:1.5">'+m.desc+'</p>'+
+   '<div class="setup"><span class="label">Anzahl Aufgaben:</span><div class="seg" id="cntSeg">'+
+   '<button data-c="10" class="on">10</button><button data-c="20">20</button><button data-c="0">Endlos</button></div></div>'+
+   '<div class="nextrow"><button class="btn primary full" id="goBtn">Los geht\u2019s →</button></div></div>';
+ setupCount=10;
+ host.querySelectorAll('#cntSeg button').forEach(b=>b.onclick=()=>{
+   host.querySelectorAll('#cntSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+   setupCount=+b.dataset.c;});
+ $('goBtn').onclick=()=>startSession(mode,setupCount===0?Infinity:setupCount);
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function goHome(){
+ $('train').classList.add('hidden');$('results').classList.add('hidden');$('home').classList.remove('hidden');
+ renderHeader();renderModes();renderBadges();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============ PROFILE (lokale Spielerprofile) ============ */
+function initials(n){const t=(n||'').trim();if(!t)return'★';const p=t.split(/\s+/);return((p[0][0]||'')+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+function updateProfileBtn(){const n=activeName();$('pfBtnName').textContent=n||'Gast';$('pfAvatar').textContent=n?initials(n):'★';}
+function openProfiles(){$('pfName').value='';renderProfiles();$('pfOverlay').classList.add('show');setTimeout(()=>{try{$('pfName').focus();}catch(e){}},120);}
+function closeProfiles(){$('pfOverlay').classList.remove('show');}
+function profileRow(id,label,st,isActive){
+ const li=levelInfo((st&&st.xp)||0),guest=id==='';
+ const mc=(st&&st.mastered&&st.mastered.length)||0;
+ return '<div class="pf-row'+(isActive?' active':'')+'">'+
+   '<div class="pf-av">'+(guest?'★':esc(initials(label)))+'</div>'+
+   '<div class="pf-meta"><div class="nm">'+esc(label)+(isActive?'<span class="pf-tag">AKTIV</span>':'')+'</div>'+
+   '<div class="lv">Level '+li.level+' · '+((st&&st.xp)||0)+' XP · '+mc+'/'+TOTALQ+' gemeistert</div></div>'+
+   (isActive?'<span class="pf-check">✓</span>':'<button type="button" class="pf-use" data-use="'+esc(id)+'">Wechseln</button>')+
+   (guest?'':'<button type="button" class="pf-del" data-del="'+esc(id)+'" aria-label="Profil löschen">🗑</button>')+
+   '</div>';
+}
+function renderProfiles(){
+ const cur=activeName(),profs=loadProfiles();
+ const names=Object.keys(profs).sort((a,b)=>a.localeCompare(b,'de'));
+ $('pfHint').textContent=cur
+   ?('Aktiv: '+cur+' — dein Fortschritt wird unter diesem Namen gespeichert.')
+   :'Du spielst als Gast. Gib einen Namen ein, um deinen aktuellen Fortschritt unter diesem Namen zu sichern.';
+ let html=profileRow('','Gast',readJSON(KEY,{}),cur==='');
+ names.forEach(n=>{html+=profileRow(n,n,profs[n],cur===n);});
+ $('pfList').innerHTML=html;
+ $('pfList').querySelectorAll('[data-use]').forEach(b=>b.onclick=()=>switchProfile(b.getAttribute('data-use')));
+ $('pfList').querySelectorAll('[data-del]').forEach(b=>b.onclick=e=>{e.stopPropagation();deleteProfile(b.getAttribute('data-del'));});
+}
+function switchProfile(name){save();setActiveName(name);state=load();updateProfileBtn();closeProfiles();goHome();}
+function submitProfileName(){
+ const raw=$('pfName').value.trim().replace(/\s+/g,' ').replace(/[<>"&]/g,'');
+ if(!raw){$('pfName').focus();return;}
+ if(raw.toLowerCase()==='gast'){alert('„Gast" ist reserviert – bitte einen anderen Namen wählen.');return;}
+ const profs=loadProfiles();
+ if(profs[raw]){switchProfile(raw);return;}      // existiert → wechseln
+ save();                                          // aktuellen Stand sichern
+ profs[raw]=clone(state);                          // aktuelles Level unter dem Namen speichern
+ saveProfiles(profs);
+ setActiveName(raw);state=load();updateProfileBtn();closeProfiles();goHome();
+}
+function deleteProfile(name){
+ if(!confirm('Profil „'+name+'" wirklich löschen? Der gespeicherte Fortschritt geht verloren.'))return;
+ const profs=loadProfiles();delete profs[name];saveProfiles(profs);
+ if(activeName()===name){setActiveName('');state=load();updateProfileBtn();goHome();}
+ renderProfiles();
+}
+
+/* ============ EVENTS ============ */
+$('quitBtn').onclick=()=>{ if(sess&&sess.i>0&&!(sess.count!==Infinity&&sess.i>sess.count)){ if(sess.count===Infinity){endSession();}else{endSession();} } else goHome(); };
+$('homeBtn').onclick=goHome;
+$('againBtn').onclick=()=>{ if(sess.modeId==='wiederholen')startWiederholen(); else if(sess.modeId==='markiert')startMarkiert(); else openSetup(sess.modeId); };
+$('resetBtn').onclick=()=>{const who=activeName()||'Gast';if(confirm('Wirklich den gesamten Fortschritt von „'+who+'" (XP, Streak, Badges, gemeisterte Fragen) löschen?')){state=clone(defState);save();goHome();}};
+$('profileBtn').onclick=openProfiles;
+$('pfClose').onclick=closeProfiles;
+$('pfSave').onclick=submitProfileName;
+$('pfOverlay').onclick=e=>{if(e.target===$('pfOverlay'))closeProfiles();};
+$('pfName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitProfileName();}});
+
+/* ============ INIT ============ */
+updateProfileBtn();
+goHome();
+</script>
+</body>
+</html>
