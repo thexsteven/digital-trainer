@@ -754,15 +754,15 @@ function renderMC(q,m){
    '<div class="opts" id="opts"></div><div id="fbZone"></div></div>';
  wireMarkBtn(q._id);
  const opts=$('opts');
- q.o.forEach((txt,i)=>{
+ const order=shuffle(q.o.map((_,i)=>i));
+ order.forEach((orig,disp)=>{
    const b=document.createElement('button');b.className='opt';
-   b.innerHTML='<span class="key">'+keys[i]+'</span><span class="mono">'+txt+'</span>';
+   b.innerHTML='<span class="key">'+keys[disp]+'</span><span class="mono">'+q.o[orig]+'</span>';
    b.onclick=()=>{
-     const ok=(i===q.a);
+     const ok=(orig===q.a);
      opts.querySelectorAll('.opt').forEach((el,j)=>{el.classList.add('locked');
-       if(q.o[j]===undefined)return;
-       if(j===q.a)el.classList.add('correct');
-       else if(j===i)el.classList.add('wrong');
+       if(order[j]===q.a)el.classList.add('correct');
+       else if(order[j]===orig)el.classList.add('wrong');
        else el.classList.add('dim');});
      answered(ok);showFeedback(ok?'ok':'no',ok?'✓ Richtig':'✗ Falsch',q.w);
    };
@@ -788,13 +788,14 @@ function renderSteps(item,m){
      '<div class="prompt" style="font-size:15.5px">'+st.q+'</div><div class="opts"></div><div class="mini"></div>';
    zone.appendChild(block);
    const opts=block.querySelector('.opts');
-   st.o.forEach((txt,i)=>{
+   const order=shuffle(st.o.map((_,i)=>i));
+   order.forEach((orig,disp)=>{
      const b=document.createElement('button');b.className='opt';
-     b.innerHTML='<span class="key">'+keys[i]+'</span><span class="mono">'+txt+'</span>';
+     b.innerHTML='<span class="key">'+keys[disp]+'</span><span class="mono">'+st.o[orig]+'</span>';
      b.onclick=()=>{
-       const ok=(i===st.a); if(!ok)allOk=false;
+       const ok=(orig===st.a); if(!ok)allOk=false;
        opts.querySelectorAll('.opt').forEach((el,j)=>{el.classList.add('locked');
-         if(j===st.a)el.classList.add('correct');else if(j===i)el.classList.add('wrong');else el.classList.add('dim');});
+         if(order[j]===st.a)el.classList.add('correct');else if(order[j]===orig)el.classList.add('wrong');else el.classList.add('dim');});
        const mini=block.querySelector('.mini');
        mini.innerHTML='<div class="fb '+(ok?'ok':'no')+'" style="margin-top:12px"><div class="why">'+st.w+'</div>'+
          '<div class="nextrow"><button class="btn '+(s+1<item.steps.length?'ghost':'green')+' full" id="stepNext">'+
