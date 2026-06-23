@@ -410,6 +410,15 @@ const WANDLUNG=[
  {t:'mc',q:'Wie viele <b>Pseudotetraden</b> gibt es im BCD-Code?',o:['6','4','10','16'],a:0,w:'4 Bit erlauben 16 Kombinationen, aber nur 10 Dezimalziffern werden benötigt. Die übrigen <span class="hl">16 − 10 = 6</span> Tetraden sind Pseudotetraden und dürfen nicht auftreten.'},
  {t:'calc',q:'Wandle die Dezimalzahl <b>27</b> in <b>BCD</b> um.',ans:['00100111'],ph:'z. B. 00100111',hint:'Jede Dezimalziffer einzeln als 4-Bit-Tetrade.',w:'2 = 0010, 7 = 0111 → <span class="hl">0010 0111</span> (BCD). Nicht zu verwechseln mit der reinen Dualzahl 11011₂!'},
  {t:'calc',q:'Wandle die Dezimalzahl <b>9</b> in <b>BCD</b> um.',ans:['1001'],ph:'z. B. 1001',w:'9 = <span class="hl">1001</span> — eine einzelne Tetrade.'},
+ {t:'mc',q:'Was ist der <b>Wert einer Stelle</b> in einem Stellenwertsystem?',o:['Ziffer × Basis<sup>Position</sup>','Ziffer + Basis','Position × Ziffer','Basis × Position'],a:0,w:'In jedem Stellenwertsystem gilt: Stellenwert = <span class="hl">Ziffer × Basis<sup>Position</sup></span> (Position 0 = rechts). Beispiel binär: 101 = 1·2² + 0·2¹ + 1·2⁰ = 5.'},
+ {t:'calc',q:'Wandle die Dezimalzahl <b>3706</b> in eine <b>Hexadezimalzahl</b> um.',ans:['E7A'],ph:'z. B. E7A',hint:'Fortgesetzt durch 16 teilen, Reste rückwärts (10–15 → A–F).',w:'3706 : 16 = 231 Rest <b>10 (A)</b>; 231 : 16 = 14 Rest <b>7</b>; 14 : 16 = 0 Rest <b>14 (E)</b> → rückwärts <span class="hl">E7A</span>.'},
+ {t:'mc',q:'Wie wandelt man eine <b>Binärzahl in eine Oktalzahl</b> um?',o:['In 3er-Gruppen ab rechts bündeln, jede Gruppe = eine Oktalziffer','In 4er-Gruppen ab rechts','In 2er-Gruppen ab rechts','Durch 8 dividieren'],a:0,w:'Oktal = Basis 8 = 2³. Deshalb fasst man die Binärstellen in <span class="hl">3er-Gruppen ab rechts</span> zusammen; jede Gruppe ergibt eine Oktalziffer (0–7).'},
+ {t:'calc',q:'Wandle die Binärzahl <b>101011</b> in eine <b>Oktalzahl</b> um.',ans:['53'],ph:'z. B. 53',hint:'Von rechts in 3er-Gruppen bündeln.',w:'101 011 → 5 3 → <span class="hl">53₈</span> (= 43 dezimal).'},
+ {t:'calc',q:'Wandle die Oktalzahl <b>326</b> in eine <b>Binärzahl</b> um.',ans:['11010110','011010110'],ph:'z. B. 11010110',hint:'Jede Oktalziffer als 3-Bit-Gruppe.',w:'3=011, 2=010, 6=110 → 011 010 110 → führende Null weg → <span class="hl">11010110₂</span>.'},
+ {t:'calc',q:'Wandle die Oktalzahl <b>326</b> in eine <b>Dezimalzahl</b> um.',ans:['214'],ph:'z. B. 214',hint:'Stellenwerte 8², 8¹, 8⁰.',w:'3·64 + 2·8 + 6·1 = 192 + 16 + 6 = <span class="hl">214₁₀</span>.'},
+ {t:'mc',q:'Wie wandelt man eine <b>Binärzahl ins Vierersystem (Quartal)</b> um?',o:['In 2er-Gruppen ab rechts bündeln','In 3er-Gruppen ab rechts','In 4er-Gruppen ab rechts','Durch 2 dividieren'],a:0,w:'Das Vierersystem hat Basis 4 = 2². Deshalb bündelt man die Binärstellen in <span class="hl">2er-Gruppen ab rechts</span>; jede Gruppe ergibt eine Quartalziffer (0–3).'},
+ {t:'calc',q:'Wandle die Binärzahl <b>101011</b> ins <b>Vierersystem (Quartal)</b> um.',ans:['223'],ph:'z. B. 223',hint:'Von rechts in 2er-Gruppen bündeln.',w:'10 10 11 → 2 2 3 → <span class="hl">223₄</span> (= 43 dezimal).'},
+ {t:'calc',q:'Wandle die Quartalzahl <b>223</b> in eine <b>Binärzahl</b> um.',ans:['101011'],ph:'z. B. 101011',hint:'Jede Quartalziffer als 2-Bit-Gruppe.',w:'2=10, 2=10, 3=11 → <span class="hl">101011₂</span>.'},
 ];
 
 /* ---------- 2) Rechnen mit Binärwerten (Folien 63–70) ---------- */
@@ -430,6 +439,12 @@ const RECHNEN=[
    {q:'Was bedeutet 1100 als Zweierkomplement-Zahl?',o:['−4','12','4','−12'],a:0,w:'MSB = 1 → negativ. Zurück: 1100 invertieren → 0011, +1 → 0100 = 4, also <span class="hl">−4</span>. Passt zu 2 − 6 = −4.'},
  ]},
  {t:'mc',q:'⚠️ Du sollst <b>5 − 3</b> per Zweierkomplement rechnen. Von <b>welcher Zahl</b> bildest du das Zweierkomplement?',o:['Nur von 3 (dem Subtrahenden)','Von 5','Von beiden','Von keiner'],a:0,w:'Nur die <b>zu subtrahierende</b> Zahl (3) wird ins Zweierkomplement gebracht und dann addiert. Häufiger Fehler: das Komplement der positiven Zahl (5) zu bilden — das wäre falsch.'},
+ {t:'mc',q:'Welchen <b>Wertebereich</b> hat eine <b>vorzeichenlose</b> n-Bit-Zahl?',o:['0 bis 2ⁿ − 1','−2ⁿ⁻¹ bis 2ⁿ⁻¹ − 1','0 bis 2ⁿ','1 bis 2ⁿ'],a:0,w:'Vorzeichenlos (nur positive Zahlen): <span class="hl">0 … 2ⁿ − 1</span>. Bei 8 Bit also 0 … 255.'},
+ {t:'mc',q:'Welchen <b>Wertebereich</b> hat eine n-Bit-Zahl im <b>Zweierkomplement</b>?',o:['−2ⁿ⁻¹ bis 2ⁿ⁻¹ − 1','0 bis 2ⁿ − 1','−2ⁿ bis 2ⁿ','−2ⁿ⁻¹ bis 2ⁿ⁻¹'],a:0,w:'Im Zweierkomplement ist ein Bit fürs Vorzeichen reserviert: <span class="hl">−2ⁿ⁻¹ … 2ⁿ⁻¹ − 1</span>. Bei 8 Bit also −128 … +127.'},
+ {t:'calc',q:'Was ist die <b>größte positive Zahl</b> in einer <b>8-Bit-Zweierkomplementzahl</b> (dezimal)?',ans:['127'],ph:'z. B. 127',w:'2⁸⁻¹ − 1 = 2⁷ − 1 = 128 − 1 = <span class="hl">127</span> (Binär 0111 1111).'},
+ {t:'calc',q:'Was ist die <b>kleinste (negativste) Zahl</b> in einer <b>8-Bit-Zweierkomplementzahl</b> (dezimal)?',ans:['-128','−128'],ph:'z. B. -128',w:'−2⁸⁻¹ = −2⁷ = <span class="hl">−128</span> (Binär 1000 0000).'},
+ {t:'mc',q:'Wann entsteht bei der <b>Zweierkomplement-Addition</b> ein <b>Overflow (Überlauf)</b>?',o:['Wenn zwei Zahlen mit gleichem Vorzeichen addiert werden und das Ergebnis das andere Vorzeichen hat','Immer wenn ein Übertrag entsteht','Nur bei der Addition von 0','Wenn beide Zahlen negativ sind'],a:0,w:'Overflow heißt: das Ergebnis passt nicht mehr in n Bit. Verräterisch: <span class="hl">gleiche Vorzeichen der Summanden, aber anderes Vorzeichen im Ergebnis</span> (z. B. positiv + positiv = negativ).'},
+ {t:'mc',q:'4-Bit-Zweierkomplement: <span class="mono">0100 + 0101 = 1001</span>. Was ist passiert?',o:['Overflow — +4 und +5 ergeben scheinbar −7, weil +9 nicht in 4 Bit passt','Alles korrekt, Ergebnis ist 9','Ergebnis ist −7 und das ist richtig','Es entsteht ein Übertrag, aber kein Fehler'],a:0,w:'+4 + +5 = +9, aber 4-Bit-ZK reicht nur bis +7. Beide Summanden positiv, Ergebnis 1001 ist negativ (−7) → <span class="hl">Overflow</span>.'},
 ];
 
 /* ---------- 3) Gleitkommazahlen / IEEE 754 (Folien 71–96) ---------- */
@@ -452,6 +467,16 @@ const IEEE=[
  {t:'mc',q:'Welcher <b>Rundungsmodus</b> wird bei IEEE 754 am häufigsten verwendet?',o:['Runden zur nächsten darstellbaren Zahl','Immer aufrunden','Immer abrunden','Immer Richtung 0'],a:0,w:'Am sinnvollsten und häufigsten ist das <span class="hl">Runden zur nächsten darstellbaren Zahl</span> (bei genau zwischen zwei Zahlen → so, dass das niederwertigste Bit 0 wird).'},
  {t:'self',tag:'IEEE 754',task:'Rechne die float-Zahl <b>0 | 10000011 | 00100110011001100110011</b> zurück in eine Dezimalzahl. Nenne die Schritte.',
   desc:'<ul><li><b>Vorzeichen</b> = 0 → positiv.</li><li><b>Exponent</b>: 10000011₂ = 131, minus Bias 127 → Exponent 4, also „· 2⁴“.</li><li><b>Mantisse</b>: „1,“ davorschreiben → 1,00100110011001100110011 · 2⁴.</li><li>Komma 4 Stellen nach rechts → 10010,0110011001100110011.</li><li>10010₂ = 18 (Vorkomma); Nachkommastellen mit 2⁻¹, 2⁻²,… addieren.</li><li>Ergebnis ≈ <b>18,3999996…</b> — wegen der periodischen 0,4 nicht exakt 18,4!</li></ul>'},
+ {t:'mc',q:'Was ist der <b>erste Schritt</b> bei der Addition zweier binärer Gleitkommazahlen?',o:['Die Exponenten angleichen (Komma der kleineren Zahl nach links verschieben)','Sofort die Mantissen addieren','Runden','Das Vorzeichen bestimmen'],a:0,w:'Zuerst müssen <span class="hl">beide Exponenten gleich groß</span> sein. Dazu verschiebt man das Komma der Zahl mit dem kleineren Exponenten so weit nach links, bis die Exponenten übereinstimmen.'},
+ {t:'mc',q:'Nach dem Addieren der Mantissen ergibt sich <span class="mono">10,011 · 2³</span>. Was nun?',o:['Normalisieren: Komma hinter die erste 1 → 1,0011 · 2⁴','So lassen, ist schon fertig','Komma nach rechts → 100,11 · 2²','Mantisse abschneiden'],a:0,w:'Es darf nur <span class="hl">eine 1 vor dem Komma</span> stehen. Komma eine Stelle nach links → Exponent +1: 10,011·2³ = 1,0011·2⁴.'},
+ {t:'steps',title:'<b>Gleitkomma-Addition</b>: 12,50 + 2,25',sub:'Beide positiv — Verfahren Schritt für Schritt (Ergebnis 14,75)',steps:[
+   {q:'Wandle <b>12,50</b> in normalisierte Binärform (1,… · 2ᵉ):',o:['1,1001 · 2³','1,001 · 2³','11,001 · 2²','1,1001 · 2²'],a:0,w:'12,5 = 1100,1₂. Komma 3 Stellen nach links → <span class="hl">1,1001 · 2³</span>.'},
+   {q:'Wandle <b>2,25</b> in normalisierte Binärform:',o:['1,001 · 2¹','1,01 · 2¹','1,001 · 2²','10,01 · 2⁰'],a:0,w:'2,25 = 10,01₂. Komma 1 Stelle nach links → <span class="hl">1,001 · 2¹</span>.'},
+   {q:'Die Exponenten sind 3 und 1. Was tust du mit der kleineren Zahl (2,25)?',o:['Komma um 2 Stellen nach links schieben, bis ihr Exponent auch 3 ist','Komma um 2 nach rechts schieben','12,50 anpassen','Nichts, direkt addieren'],a:0,w:'Differenz = 3 − 1 = 2. Das Komma der <span class="hl">kleineren</span> Zahl 2 Stellen nach links → Exponent wird zu 3.'},
+   {q:'2,25 = 1,001·2¹ angeglichen auf Exponent 3:',o:['0,01001 · 2³','100,1 · 2³','1,001 · 2³','0,1001 · 2³'],a:0,w:'1,001 um 2 Stellen nach links → <span class="hl">0,01001 · 2³</span>.'},
+   {q:'Addiere die Mantissen: 1,10010 + 0,01001 =',o:['1,11011','1,01011','10,11011','1,10011'],a:0,w:'1,10010 + 0,01001 = <span class="hl">1,11011</span> · 2³ — schon normalisiert (eine 1 vor dem Komma).'},
+   {q:'Rechne zurück: 1,11011 · 2³ als Dezimalzahl:',o:['14,75','12,75','15,5','13,25'],a:0,w:'Komma 3 nach rechts → 1110,11₂ = 8+4+2 + 0,5+0,25 = <span class="hl">14,75</span>. Passt: 12,50 + 2,25 = 14,75.'},
+ ]},
 ];
 
 /* ---------- 4) Logische Verknüpfungen / Gatter (Folie 140) ---------- */
@@ -502,6 +527,14 @@ const NORMALFORM=[
    {q:'C = 1 → C erscheint im Minterm …',o:['nicht negiert: C','negiert: ¬C','gar nicht','als Konstante'],a:0,w:'Mit 1 belegt → <span class="hl">nicht negiert</span> (C).'},
    {q:'Der vollständige Minterm lautet:',o:['A ∧ ¬B ∧ C','¬A ∧ B ∧ ¬C','A ∨ ¬B ∨ C','A ∧ B ∧ C'],a:0,w:'Alle drei per UND: <span class="hl">A ∧ ¬B ∧ C</span>.'},
  ]},
+ {t:'mc',q:'Wahrheitstabelle (A,B): f=1 nur bei (A=0,B=1) und (A=1,B=1). Wie lautet die <b>KDNF</b>?',o:['(¬A ∧ B) ∨ (A ∧ B)','(A ∨ B) ∧ (¬A ∨ B)','¬A ∨ B','(A ∧ B)'],a:0,w:'Für jede 1-Zeile ein Minterm: (A=0,B=1)→¬A∧B; (A=1,B=1)→A∧B. ODER-verknüpft: <span class="hl">(¬A ∧ B) ∨ (A ∧ B)</span> (lässt sich zu B vereinfachen).'},
+ {t:'mc',q:'Wahrheitstabelle (A,B): f=0 nur bei (A=0,B=0) und (A=1,B=0). Wie lautet die <b>KKNF</b>?',o:['(A ∨ B) ∧ (¬A ∨ B)','(¬A ∧ B) ∨ (A ∧ B)','(A ∧ B)','A ∨ ¬B'],a:0,w:'Für jede 0-Zeile ein Maxterm (mit 1 belegte Variable negieren): (A=0,B=0)→A∨B; (A=1,B=0)→¬A∨B. UND-verknüpft: <span class="hl">(A ∨ B) ∧ (¬A ∨ B)</span>.'},
+ {t:'mc',q:'Wann sind zwei Felder im <b>KV-Diagramm benachbart</b>?',o:['Wenn sie sich in genau einem Bit unterscheiden (Hamming-Distanz 1)','Wenn sie nebeneinander gezeichnet sind','Wenn beide eine 1 enthalten','Wenn sie dieselbe Variable haben'],a:0,w:'Benachbart = <span class="hl">Hamming-Distanz 1</span> (genau eine Variable ändert sich). Deshalb sind auch gegenüberliegende Ränder benachbart.'},
+ {t:'mc',q:'Welche <b>Kantenlängen</b> dürfen KV-Blöcke haben?',o:['Nur Zweierpotenzen (1, 2, 4)','Beliebige Längen','Nur ungerade Längen','Nur Vielfache von 3'],a:0,w:'Blöcke müssen rechteckig sein, mit Kantenlängen als <span class="hl">Zweierpotenzen</span> (1/2/4). So groß und so wenige wie möglich; sie dürfen überlappen und über die Ränder laufen.'},
+ {t:'mc',q:'Wie viele Variablen entfallen bei einem <b>4er-Block</b> im KV-Diagramm?',o:['2','1','3','0'],a:0,w:'Bei einem 2er-Block entfällt 1 Variable, beim 4er-Block <span class="hl">2</span>, beim 8er-Block 3 — je größer der Block, desto einfacher der Term.'},
+ {t:'mc',q:'Du fasst im KV-Diagramm die <b>1-Felder</b> zu Blöcken zusammen. Welche Minimalform erhältst du?',o:['Die DMF (disjunktive Minimalform)','Die KMF (konjunktive Minimalform)','Die KKNF','Die KDNF'],a:0,w:'1-Felder → Blöcke → jeder Block ist ein UND-Term → ODER-verknüpft = <span class="hl">DMF</span>. (0-Felder zusammenfassen ergäbe die KMF.)'},
+ {t:'mc',q:'Wie behandelt man ein <b>don\'t-care „X"</b> im KV-Diagramm?',o:['Je nach Bedarf als 0 oder 1, um möglichst große Blöcke zu bilden','Immer als 0','Immer als 1','Man lässt es leer'],a:0,w:'Ein „X" darf <span class="hl">frei als 0 oder 1</span> gewertet werden — so, dass möglichst große (= einfachere) Blöcke entstehen.'},
+ {t:'mc',q:'Im KV-Diagramm bilden alle Felder mit <b>A=0</b> einen 4er-Block (3 Variablen A,B,C). Wie lautet der zugehörige Term?',o:['¬A','A','¬A ∧ ¬B','B ∧ C'],a:0,w:'In allen vier Feldern bleibt nur A konstant (=0), B und C entfallen. Term = <span class="hl">¬A</span>.'},
 ];
 
 /* ---------- 7) Halbaddierer & Volladdierer (Digitaltechnik 2) ---------- */
@@ -546,6 +579,15 @@ const CODES=[
    {q:'Nach dem Schieben bekommen BCD-Ziffern ≥ 5 …',o:['+3 addiert','−3 subtrahiert','+5 addiert','nichts'],a:0,w:'Jede BCD-Ziffer ≥ 5 wird um <span class="hl">3 erhöht</span>.'},
    {q:'Wie groß darf eine BCD-Ziffer (Tetrade) maximal sein?',o:['9','15','16','5'],a:0,w:'Eine BCD-Ziffer darf maximal <span class="hl">9</span> sein — sonst entstünde eine Pseudotetrade.'},
    {q:'Warum gerade „+3“ bei ≥ 5?',o:['Weil der nächste Shift verdoppelt: aus +3 wird +6 — das überbrückt die Lücke zwischen Binär (16) und BCD (10) und erzeugt den Dezimalübertrag','Reiner Zufall','Um Speicher zu sparen','Um die Zahl zu negieren'],a:0,w:'Beim nächsten Shift wird die addierte 3 zu 6 — genau der Unterschied zwischen 16er-Binär und 10er-BCD. Außerdem erzeugt das den <span class="hl">Übertrag in die nächste Dezimalstelle</span>.'},
+ ]},
+ {t:'calc',q:'Wandle die Binärzahl <b>11011</b> per <b>Double-Dabble</b> in <b>BCD</b> um (8 Bit, Zehner + Einer).',ans:['00100111'],ph:'z. B. 00100111',hint:'5 Bit → 5 Linksshifts. Vor jedem Shift jede Tetrade ≥ 5 um +3 korrigieren.',w:'11011₂ = 27. Double-Dabble liefert die Tetraden 0010 (2) und 0111 (7) → <span class="hl">0010 0111</span>.'},
+ {t:'steps',title:'<b>Double-Dabble</b>: 11011₂ → BCD',sub:'27 in BCD umwandeln, Schritt für Schritt',steps:[
+   {q:'11011 hat 5 Bit. Wie viele <b>Linksshifts</b> brauchst du insgesamt?',o:['5 (= Anzahl der Binärstellen)','8','2','11'],a:0,w:'Pro Binärstelle genau ein Shift → <span class="hl">5 Shifts</span>.'},
+   {q:'Nach 3 Shifts steht in der Einer-Tetrade <b>0110</b>. Was tust du vor dem nächsten Shift?',o:['+3 addieren, weil die Ziffer ≥ 5 ist','Nichts','−3 subtrahieren','Sofort schieben'],a:0,w:'0110 = 6 ≥ 5 → <span class="hl">+3</span> (Shift-and-Add-3). So bleibt nach dem nächsten Verdoppeln der Dezimalübertrag korrekt.'},
+   {q:'0110 + 3 =',o:['1001','1000','0111','1010'],a:0,w:'6 + 3 = 9 = <span class="hl">1001</span>.'},
+   {q:'Jetzt nach links schieben und das nächste Bit (1) einschieben. Ergebnis (Zehner | Einer):',o:['0001 | 0011','0000 | 1001','0010 | 0011','0001 | 0010'],a:0,w:'0000 1001 nach links + Bit 1 → <span class="hl">0001 0011</span>.'},
+   {q:'Letztes Bit (1): keine Tetrade ≥ 5, also nur schieben. Endergebnis (Zehner | Einer):',o:['0010 | 0111','0001 | 0111','0011 | 0001','0010 | 0011'],a:0,w:'0001 0011 nach links + Bit 1 → <span class="hl">0010 0111</span>.'},
+   {q:'Lies das BCD-Ergebnis 0010 0111 als Dezimalzahl:',o:['27','39','19','25'],a:0,w:'Zehner 0010 = 2, Einer 0111 = 7 → <span class="hl">27</span>. Passt zu 11011₂ = 27.'},
  ]},
 ];
 
